@@ -1,0 +1,67 @@
+.home {
+    background: #171717;
+    overflow-x: hidden;
+    padding-bottom: 80px;
+    /* Space for fixed footer */
+    margin-top: 75px;
+    /* Space after fixed navbar (70px navbar + 5px margin) */
+}
+
+.services-section {
+    padding: var(--spacing-lg) 0;
+    background: #171717;
+    overflow: hidden;
+    position: relative;
+}
+
+.services-container {
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.services-strip-wrapper {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+
+.services-strip {
+    display: flex;
+    /* geometric precision for seamless loop: use margin on items instead of gap */
+    gap: 0;
+    animation: scroll-left 40s linear infinite;
+    width: fit-content;
+    padding: var(--spacing-md) 0;
+}
+
+.services-strip:hover {
+    animation-play-state: paused;
+}
+
+@keyframes scroll-left {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* Duplicate cards for seamless loop */
+.services-strip-content {
+    display: flex;
+    gap: var(--spacing-lg);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .services-section {
+        padding: var(--spacing-lg) 0;
+    }
+
+    .services-strip {
+        gap: var(--spacing-md);
+        animation: scroll-left 30s linear infinite;
+    }
+}
