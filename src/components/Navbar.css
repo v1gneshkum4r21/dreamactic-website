@@ -66,10 +66,14 @@
     list-style: none;
     margin: 0;
     padding: 0;
+    height: 100%;
 }
 
 .navbar-item {
     position: relative;
+    height: 100%;
+    display: flex;
+    align-items: center;
 }
 
 .navbar-link {
@@ -83,27 +87,78 @@
     text-decoration: none;
     cursor: pointer;
     transition: all 0.3s ease;
-    padding: 0.5rem 0;
+    padding: 0 1.25rem;
+    height: 42px;
+    /* Compact, more elegant height */
     position: relative;
+    border-radius: 8px;
+    z-index: 1;
 }
 
+/* Stability Bridge - Invisible area to prevent dropdown from closing when moving mouse down */
 .navbar-link::after {
     content: '';
     position: absolute;
-    bottom: 0;
+    top: 100%;
     left: 0;
-    width: 0;
-    height: 2px;
-    background: linear-gradient(90deg, #a78bfa, #8b5cf6, #7c3aed);
-    transition: width 0.3s ease;
+    right: 0;
+    height: 30px;
+    /* Bridge the gap to the 70px dropdown top */
+    background: transparent;
+    pointer-events: auto;
 }
 
 .navbar-link:hover {
     color: #ffffff;
 }
 
-.navbar-link:hover::after {
-    width: 100%;
+/* Snake Border Effect */
+.navbar-link::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 8px;
+    padding: 1.2px;
+    /* Thinner for sharpness */
+    background: conic-gradient(from var(--angle),
+            transparent 75%,
+            #c4b5fd,
+            #a78bfa,
+            #8b5cf6,
+            #a78bfa,
+            #c4b5fd);
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    animation: snake-rotate 3s linear infinite;
+    pointer-events: none;
+}
+
+.navbar-link:hover::before {
+    opacity: 1;
+}
+
+@property --angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+}
+
+@keyframes snake-rotate {
+    from {
+        --angle: 0deg;
+    }
+
+    to {
+        --angle: 360deg;
+    }
 }
 
 .dropdown-icon {
@@ -349,8 +404,7 @@
     /* Balanced padding */
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    outline: 2px solid transparent;
-    outline-offset: 2px;
+    z-index: 1;
 }
 
 .search-container:hover,
@@ -358,7 +412,41 @@
     background: rgba(255, 255, 255, 0.08);
     border-color: rgba(255, 255, 255, 0.25);
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-    outline-color: rgba(139, 92, 246, 0.3);
+}
+
+/* Search Snake Border Effect */
+.search-container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 99px;
+    padding: 1.2px;
+    background: conic-gradient(from var(--angle),
+            transparent 75%,
+            #c4b5fd,
+            #a78bfa,
+            #8b5cf6,
+            #a78bfa,
+            #c4b5fd);
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    animation: snake-rotate 3s linear infinite;
+    pointer-events: none;
+    z-index: 1;
+    /* Bring forward to edge of container */
+}
+
+.search-container:hover::before,
+.search-container.active::before {
+    opacity: 1;
 }
 
 .search-input {
@@ -416,117 +504,234 @@
     top: 70px;
     left: 0;
     width: 100%;
-    background: rgba(10, 10, 10, 0.98);
-    /* Slightly more opaque for readability */
-    backdrop-filter: blur(30px);
-    -webkit-backdrop-filter: blur(30px);
+    height: calc(100vh - 130px);
+    /* Fill space between navbar (70px) and footer (~60px) */
+    background: rgba(10, 10, 10, 0.85);
+    /* Semi-transparent for glass effect */
+    backdrop-filter: blur(40px);
+    /* Strong blur to obscure content */
+    -webkit-backdrop-filter: blur(40px);
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 3rem 0;
+    padding: 0;
     box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.9);
     z-index: 998;
     display: flex;
     justify-content: center;
+    overflow-y: auto;
     animation: dropdownSlideDown 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.complex-grid {
-    display: grid;
-    grid-template-columns: 2.5fr 1fr;
-    gap: 4rem;
-    max-width: 1400px;
+/* Striped Mega Menu Core Styles */
+.mega-strips-wrapper {
     width: 100%;
-    padding: 0 2rem;
-}
-
-.complex-main {
+    max-width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 2.5rem;
 }
 
-.complex-row {
-    display: grid;
-    grid-template-columns: 250px 1fr;
-    gap: 3rem;
-    padding-bottom: 2.5rem;
+.mega-strip {
+    width: 100%;
+    padding: 1.5rem 0;
+    /* Compact bar height */
+    display: flex;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    text-decoration: none;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
 }
 
-.complex-row:last-child {
-    padding-bottom: 0;
+.mega-strip:last-child {
     border-bottom: none;
 }
 
-.complex-row-header h4 {
+.mega-strip:hover {
+    filter: brightness(1.2);
+    z-index: 2;
+}
+
+.strip-content {
+    max-width: 1400px;
+    width: 100%;
+    padding: 0 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3rem;
+}
+
+.strip-info {
+    display: flex;
+    align-items: baseline;
+    gap: 2rem;
+    flex: 1;
+}
+
+.strip-info h4 {
     font-size: 1.25rem;
     font-weight: 700;
     color: #fff;
-    margin-bottom: 0.75rem;
+    white-space: nowrap;
+    margin: 0;
+    min-width: 200px;
+    letter-spacing: -0.01em;
 }
 
-.complex-row-header p {
+.strip-info p {
     font-size: 0.9rem;
     color: rgba(255, 255, 255, 0.6);
-    line-height: 1.5;
-    margin-bottom: 1.5rem;
+    line-height: 1.4;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    flex: 1;
 }
 
-.complex-cta {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.6rem 1.2rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-    /* Boxy look per ref */
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-    color: #fff;
-    text-decoration: none;
-    text-transform: uppercase;
-    transition: all 0.2s ease;
+.strip-chevron {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
 }
 
-.complex-cta:hover {
-    background: #fff;
+/* Theme: Pastel Strips (Services) - Premium Pastel Refinements */
+.theme-pastel-strips .mega-strip {
+    border-left: 4px solid transparent;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.theme-pastel-strips .mega-strip.strip-0 {
+    background: #8e88b5;
+}
+
+.theme-pastel-strips .mega-strip.strip-1 {
+    background: #88a1b5;
+}
+
+.theme-pastel-strips .mega-strip.strip-2 {
+    background: #88b5a1;
+}
+
+.theme-pastel-strips .mega-strip.strip-0:hover {
+    border-left-color: #6d64a8;
+}
+
+.theme-pastel-strips .mega-strip.strip-1:hover {
+    border-left-color: #638eb5;
+}
+
+.theme-pastel-strips .mega-strip.strip-2:hover {
+    border-left-color: #63b58e;
+}
+
+.theme-pastel-strips .mega-strip:hover {
+    filter: brightness(1.08);
+    transform: scale(1.005) translateX(4px);
+    box-shadow: 20px 0 40px rgba(0, 0, 0, 0.1);
+}
+
+.theme-pastel-strips .mega-strip:hover .strip-chevron {
+    transform: translateX(8px);
     color: #000;
 }
 
-.complex-row-columns {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
+/* Better text contrast on light opaque strips */
+.theme-pastel-strips .mega-strip h4 {
+    color: #1a1a1a;
 }
 
-.complex-column h5 {
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: rgba(255, 255, 255, 0.4);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 1rem;
+.theme-pastel-strips .mega-strip p {
+    color: rgba(0, 0, 0, 0.7);
 }
 
-.complex-column ul {
-    list-style: none;
+.theme-pastel-strips .strip-chevron {
+    color: rgba(0, 0, 0, 0.4);
+}
+
+.theme-pastel-strips .mega-strip:hover .strip-chevron {
+    color: #000;
+}
+
+/* Theme: High Contrast Strips (Products) - Cosmic Neon Aesthetic */
+.theme-high-contrast-strips .mega-strip {
+    border-left: 4px solid transparent;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.theme-high-contrast-strips .mega-strip.strip-0 {
+    background: #0a0a14;
+    /* Ultra-Subtle Indigo Shadow */
+}
+
+.theme-high-contrast-strips .mega-strip.strip-1 {
+    background: #0d0a14;
+    /* Ultra-Subtle Plum Shadow */
+}
+
+.theme-high-contrast-strips .mega-strip.strip-2 {
+    background: #0a1411;
+    /* Ultra-Subtle Pine Shadow */
+}
+
+.theme-high-contrast-strips .mega-strip:hover {
+    background: #121225;
+    transform: scale(1.01) translateX(4px);
+    z-index: 10;
+}
+
+.theme-high-contrast-strips .mega-strip.strip-0:hover {
+    border-left-color: #8b5cf6;
+    box-shadow: 20px 0 50px rgba(139, 92, 246, 0.2);
+}
+
+.theme-high-contrast-strips .mega-strip.strip-1:hover {
+    border-left-color: #ec4899;
+    box-shadow: 20px 0 50px rgba(236, 72, 153, 0.2);
+}
+
+.theme-high-contrast-strips .mega-strip.strip-2:hover {
+    border-left-color: #10b981;
+    box-shadow: 20px 0 50px rgba(16, 185, 129, 0.2);
+}
+
+.theme-high-contrast-strips .mega-strip h4 {
+    color: #ffffff;
+    transition: color 0.3s ease;
+}
+
+.theme-high-contrast-strips .mega-strip p {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.theme-high-contrast-strips .strip-chevron {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.theme-high-contrast-strips .mega-strip.strip-0:hover h4 {
+    color: #c4b5fd;
+}
+
+.theme-high-contrast-strips .mega-strip.strip-1:hover h4 {
+    color: #f9a8d4;
+}
+
+.theme-high-contrast-strips .mega-strip.strip-2:hover h4 {
+    color: #6ee7b7;
+}
+
+.theme-high-contrast-strips .mega-strip:hover .strip-chevron {
+    color: #fff;
+    transform: translateX(8px);
+}
+
+/* Cleanup old complex styles */
+.mega-complex-container {
     padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-}
-
-.complex-column li {
-    font-size: 0.95rem;
-    color: rgba(255, 255, 255, 0.8);
-    cursor: pointer;
-    transition: color 0.2s;
-}
-
-.complex-column li:hover {
-    color: #8b5cf6;
 }
 
 /* Sidebar */
@@ -613,9 +818,11 @@
     top: 70px;
     left: 0;
     width: 100%;
-    background: rgba(10, 10, 10, 0.98);
-    backdrop-filter: blur(30px);
-    -webkit-backdrop-filter: blur(30px);
+    height: calc(100vh - 130px);
+    /* Match footer visibility */
+    background: rgba(10, 10, 10, 0.85);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     padding: 3rem 0;
@@ -623,6 +830,7 @@
     z-index: 998;
     display: flex;
     justify-content: center;
+    overflow-y: auto;
     animation: dropdownSlideDown 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -826,35 +1034,18 @@
     font-weight: 700;
 }
 
-/* Responsive Search */
-@media (max-width: 1024px) {
-
-    /* On tablet/mobile, revert to collapsible behavior */
-    .search-container {
-        background: transparent;
-        border-color: transparent;
-        padding: 0;
-    }
-
-    .search-container.active {
-        background: rgba(255, 255, 255, 0.1);
-        border-color: rgba(255, 255, 255, 0.2);
-        padding: 4px;
-        padding-right: 4px;
-    }
-
-    .search-container.active .search-input {
-        width: 160px;
-        opacity: 1;
-        padding: 0 12px;
+/* Responsive Search Layout */
+@media (max-width: 768px) {
+    .desktop-search {
+        display: none;
     }
 }
 
-/* Right Side Actions */
+/* Navbar Actions */
 .navbar-actions {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 1rem;
 }
 
 .icon-button {
@@ -893,6 +1084,103 @@
     transform: translateY(-2px);
 }
 
+/* Showcase Button */
+.showcase-button {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    justify-content: center;
+
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(124, 58, 237, 0.15));
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 99px;
+
+    color: #ffffff;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: visible;
+    /* Changed to visible for border glow if needed */
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
+    z-index: 1;
+}
+
+.showcase-button:hover {
+    width: 140px;
+    /* Increased for "Showcase" text */
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(124, 58, 237, 0.25));
+    border-color: rgba(139, 92, 246, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(139, 92, 246, 0.35);
+    justify-content: flex-start;
+    padding: 0 16px;
+    /* Added horizontal padding for balance */
+    gap: 10px;
+    /* Better spacing between icon and text */
+}
+
+/* Showcase Snake Border Effect */
+.showcase-button::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 99px;
+    padding: 1.2px;
+    background: conic-gradient(from var(--angle),
+            transparent 75%,
+            #c4b5fd,
+            #a78bfa,
+            #8b5cf6,
+            #a78bfa,
+            #c4b5fd);
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    animation: snake-rotate 3s linear infinite;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.showcase-button:hover::before {
+    opacity: 1;
+}
+
+.showcase-button span {
+    white-space: nowrap;
+    opacity: 0;
+    max-width: 0;
+    transform: translateX(10px);
+    transition: all 0.3s ease;
+    z-index: 2;
+}
+
+.showcase-button:hover span {
+    opacity: 1;
+    max-width: 100px;
+    transform: translateX(0);
+}
+
+.showcase-button svg {
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+    transition: all 0.3s ease;
+}
+
+/* Contact Button */
 .contact-button {
     display: flex;
     align-items: center;
@@ -919,21 +1207,56 @@
     cursor: pointer;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
-    overflow: hidden;
+    overflow: visible;
+    z-index: 1;
 }
 
 .contact-button:hover {
-    width: 130px;
-    /* Expand width */
+    width: 150px;
+    /* Increased for "Contact Us" text balance */
     transform: translateY(-2px);
     background: rgba(255, 255, 255, 0.1);
     border-color: rgba(255, 255, 255, 0.2);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-    padding-left: 0;
-    /* Keep icon centered-ish relative to expansion? */
+    box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+    /* Purple glow consistent with earlier fix */
     justify-content: flex-start;
-    padding-left: 12px;
-    gap: 8px;
+    padding: 0 16px;
+    /* Balanced horizontal padding */
+    gap: 10px;
+    /* Better spacing between icon and text */
+}
+
+/* Contact Snake Border Effect */
+.contact-button::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 99px;
+    padding: 1.2px;
+    background: conic-gradient(from var(--angle),
+            transparent 75%,
+            #c4b5fd,
+            #a78bfa,
+            #8b5cf6,
+            #a78bfa,
+            #c4b5fd);
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    animation: snake-rotate 3s linear infinite;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.contact-button:hover::before {
+    opacity: 1;
 }
 
 .contact-button span {
@@ -942,6 +1265,9 @@
     max-width: 0;
     transform: translateX(10px);
     transition: all 0.3s ease;
+    position: relative;
+    z-index: 2;
+    /* Ensure above snake line */
 }
 
 .contact-button:hover span {
@@ -953,45 +1279,8 @@
 .contact-button svg {
     flex-shrink: 0;
     position: relative;
-    z-index: 1;
-}
-
-/* Contact Button Hover Effect */
-@keyframes shine {
-    0% {
-        transform: translateX(-150%) skewX(-15deg);
-    }
-
-    100% {
-        transform: translateX(150%) skewX(-15deg);
-    }
-}
-
-.contact-button::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 200%;
-    height: 100%;
-    background: linear-gradient(to right,
-            transparent 0%,
-            rgba(255, 255, 255, 0.2) 50%,
-            transparent 100%);
-    transform: translateX(-150%) skewX(-15deg);
-    transition: none;
-}
-
-.contact-button:hover::after {
-    animation: shine 0.75s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.contact-button:hover {
-    transform: translateY(-2px);
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.3);
-    box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
-    /* Purple glow */
+    z-index: 2;
+    /* Ensure above snake line */
 }
 
 /* Responsive */
@@ -1122,7 +1411,8 @@
     color: rgba(255, 255, 255, 0.7) !important;
     text-decoration: none;
     font-size: 1rem;
-    padding: 0.75rem 1rem;
+    padding: 1rem 1.25rem;
+    /* Increased for better touch targets */
     border-radius: 12px;
     transition: all 0.2s ease;
     border: 1px solid transparent;
@@ -1142,9 +1432,11 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    margin-bottom: 1.5rem;
-    padding-left: 0.5rem;
-    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 2rem;
+    padding-left: 1rem;
+    /* Increased indentation */
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
+    /* Subtle line for hierarchy */
 }
 
 .mobile-group-title {
@@ -1198,6 +1490,74 @@
     padding-left: 0.75rem;
 }
 
+/* Mobile Themed Strips (Services, Products) */
+.mobile-dropdown.theme-pastel-strips,
+.mobile-dropdown.theme-high-contrast-strips {
+    padding-left: 0;
+    gap: 0;
+}
+
+.mobile-dropdown.theme-pastel-strips .mobile-group,
+.mobile-dropdown.theme-high-contrast-strips .mobile-group {
+    margin-bottom: 0;
+    padding-left: 0;
+    border-left: none;
+    width: 100%;
+}
+
+.mobile-dropdown.theme-pastel-strips .mobile-dropdown-link,
+.mobile-dropdown.theme-high-contrast-strips .mobile-dropdown-link {
+    border-radius: 0;
+    padding: 1.5rem 1.75rem;
+}
+
+/* Pastel Mobile Strips */
+.mobile-dropdown.theme-pastel-strips .mobile-group:nth-child(1) .mobile-dropdown-link {
+    background: #8e88b5;
+}
+
+.mobile-dropdown.theme-pastel-strips .mobile-group:nth-child(2) .mobile-dropdown-link {
+    background: #88a1b5;
+}
+
+.mobile-dropdown.theme-pastel-strips .mobile-group:nth-child(3) .mobile-dropdown-link {
+    background: #88b5a1;
+}
+
+.mobile-dropdown.theme-pastel-strips .mobile-dropdown-link .mobile-group-title {
+    color: #1a1a1a;
+    font-weight: 800;
+}
+
+.mobile-dropdown.theme-pastel-strips .mobile-dropdown-link .mobile-group-desc {
+    color: rgba(0, 0, 0, 0.7);
+    font-weight: 500;
+}
+
+/* High Contrast Mobile Strips */
+.mobile-dropdown.theme-high-contrast-strips .mobile-group:nth-child(1) .mobile-dropdown-link {
+    background: #0a0a14;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.mobile-dropdown.theme-high-contrast-strips .mobile-group:nth-child(2) .mobile-dropdown-link {
+    background: #0d0a14;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.mobile-dropdown.theme-high-contrast-strips .mobile-group:nth-child(3) .mobile-dropdown-link {
+    background: #0a1411;
+}
+
+.mobile-dropdown.theme-high-contrast-strips .mobile-dropdown-link .mobile-group-title {
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.mobile-dropdown.theme-high-contrast-strips .mobile-dropdown-link .mobile-group-desc {
+    color: rgba(255, 255, 255, 0.5);
+}
+
 @keyframes slideDown {
     from {
         opacity: 0;
@@ -1216,5 +1576,74 @@
         /* Show only on mobile */
         align-items: center;
         justify-content: center;
+    }
+
+    /* Mobile Search Styles */
+    .mobile-search-wrapper {
+        margin-bottom: 2.5rem;
+        width: 100%;
+    }
+
+    .mobile-search-bar {
+        display: flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 0.75rem 1.25rem;
+        gap: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .mobile-search-bar:focus-within {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(139, 92, 246, 0.4);
+        box-shadow: 0 0 20px rgba(139, 92, 246, 0.1);
+    }
+
+    .mobile-search-icon {
+        color: rgba(255, 255, 255, 0.4);
+    }
+
+    .mobile-search-bar:focus-within .mobile-search-icon {
+        color: #a78bfa;
+    }
+
+    .mobile-search-input {
+        background: transparent;
+        border: none;
+        color: #fff;
+        font-size: 1rem;
+        font-weight: 500;
+        outline: none;
+        width: 100%;
+    }
+
+    .mobile-search-input::placeholder {
+        color: rgba(255, 255, 255, 0.3);
+    }
+}
+
+/* Ultra Small Screens Refinements (< 500px) */
+@media (max-width: 500px) {
+    .navbar-container {
+        padding: 0 0.75rem;
+    }
+
+    .showcase-button span,
+    .contact-button span {
+        display: none;
+    }
+
+    .showcase-button,
+    .contact-button {
+        width: 40px !important;
+        padding: 0 !important;
+        justify-content: center !important;
+        gap: 0 !important;
+    }
+
+    .search-input {
+        width: 120px;
     }
 }

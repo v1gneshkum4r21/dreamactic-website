@@ -1,8 +1,8 @@
 .hero-carousel {
     position: relative;
     width: 100%;
-    height: 520px;
-    /* Reduced specific height */
+    height: 600px;
+    /* Further reduced for tighter spacing */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -20,7 +20,8 @@
     position: relative;
     width: 100%;
     height: 100%;
-    max-width: 1400px;
+    max-width: 700px;
+    /* Square container */
     margin: 0 auto;
     transform-style: preserve-3d;
     /* Preserve 3D for children */
@@ -28,13 +29,18 @@
 
 .carousel-slide {
     position: absolute;
-    top: 45%;
-    /* Moved up slightly */
+    top: 50%;
+    /* Centered vertically */
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 65%;
-    height: 440px;
-    /* Slight reduction to match container */
+    width: 600px;
+    /* Fixed square width */
+    height: 600px;
+    /* Fixed square height */
+    max-width: 90%;
+    /* Responsive constraint */
+    aspect-ratio: 1 / 1;
+    /* Enforce square ratio */
     transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
     cursor: pointer;
     border-radius: var(--radius-xl);
@@ -42,8 +48,6 @@
     background: #1a1a1a;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
     z-index: 1;
-    /* Reflection Effect for supported browsers */
-    -webkit-box-reflect: below 10px linear-gradient(transparent 70%, rgba(0, 0, 0, 0.4));
 }
 
 /* Slide States */
@@ -60,16 +64,16 @@
 
 .carousel-slide.prev {
     z-index: 5;
-    transform: translate(-105%, -50%) scale(0.85) rotateY(25deg);
-    /* 3D Rotate Left */
+    transform: translate(-105%, -50%) scale(0.85);
+    /* Removed 3D rotation to keep square flat */
     opacity: 0.6;
     filter: blur(4px) brightness(0.7);
 }
 
 .carousel-slide.next {
     z-index: 5;
-    transform: translate(5%, -50%) scale(0.85) rotateY(-25deg);
-    /* 3D Rotate Right */
+    transform: translate(5%, -50%) scale(0.85);
+    /* Removed 3D rotation to keep square flat */
     opacity: 0.6;
     filter: blur(4px) brightness(0.7);
 }
@@ -173,7 +177,8 @@
 /* Responsive Design */
 @media (max-width: 1200px) {
     .carousel-slide {
-        width: 70%;
+        width: 550px;
+        height: 550px;
     }
 }
 
@@ -182,8 +187,13 @@
         height: 500px;
     }
 
+    .carousel-track {
+        max-width: 600px;
+    }
+
     .carousel-slide {
-        width: 80%;
+        width: 500px;
+        height: 500px;
     }
 
     /* On tablet, reduce the gap/offset for side slides */
@@ -196,45 +206,29 @@
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 480px) {
     .hero-carousel {
-        height: 450px;
-        padding: var(--spacing-md) 0;
+        height: 350px;
     }
 
-    /* Mobile: Show mainly the active slide, but keep "blur" hint if possible
-       Actually, standard centering usually works best.
-       Let's stick to the 3-section logic but tighter. */
+    .carousel-track {
+        max-width: 100%;
+    }
+
     .carousel-slide {
-        width: 85%;
-        border-radius: var(--radius-lg);
+        width: calc(100% - 40px);
+        height: 300px;
     }
 
-    /* Position the blurred slides just off-screen or peeking slightly */
     .carousel-slide.prev {
-        transform: translate(-104%, -50%) scale(0.9);
-        opacity: 0.4;
+        transform: translate(-106%, -50%) scale(0.85);
     }
 
     .carousel-slide.next {
-        transform: translate(4%, -50%) scale(0.9);
-        opacity: 0.4;
+        transform: translate(6%, -50%) scale(0.85);
     }
 
     .carousel-controls {
-        bottom: var(--spacing-md);
-        width: 100%;
-    }
-
-    .carousel-indicators {
-        padding: 0.75rem 1.5rem;
-        gap: 0.75rem;
-    }
-
-    .control-button {
-        width: 36px;
-        height: 36px;
-        /* Often hide arrows on mobile and rely on swipe */
-        display: none;
+        bottom: 0px;
     }
 }

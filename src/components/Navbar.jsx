@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Mail, ChevronDown, Menu, X } from 'lucide-react';
+import { Search, Mail, ChevronDown, Menu, X, Sparkles } from 'lucide-react';
 import ContactModal from './ContactModal';
 import './Navbar.css';
 
@@ -9,29 +9,42 @@ const Navbar = () => {
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isContactOpen, setIsContactOpen] = useState(false);
+    const closeTimeoutRef = useRef(null);
+
+    const handleMouseEnter = (label) => {
+        if (closeTimeoutRef.current) {
+            clearTimeout(closeTimeoutRef.current);
+            closeTimeoutRef.current = null;
+        }
+        setActiveDropdown(label);
+    };
+
+    const handleMouseLeave = () => {
+        closeTimeoutRef.current = setTimeout(() => {
+            setActiveDropdown(null);
+        }, 150); // 150ms delay to bridge potential gaps
+    };
 
     const navItems = [
         {
             label: 'SERVICES',
             layout: 'complex',
+            theme: 'pastel-strips',
             mainContent: [
                 {
                     title: "AI for Work",
                     desc: "Search across silos. Automate workflows. Orchestrate AI agents.",
-                    path: "/services/work",
-                    columns: [
-                        { title: "FEATURES", items: ["Enterprise Search", "Pre-Built AI Agents", "AI Agent Builder"] },
-                        { title: "ACCELERATORS", items: ["HR", "IT", "Recruiting"] }
-                    ]
+                    path: "/services/work"
                 },
                 {
                     title: "AI for Service",
                     desc: "Leverage Agentic capabilities to empower customers.",
-                    path: "/services/service",
-                    columns: [
-                        { title: "FEATURES", items: ["AI Agents", "Agentic Contact Center", "Proactive Outreach"] },
-                        { title: "ACCELERATORS", items: ["Retail", "Banking", "Healthcare"] }
-                    ]
+                    path: "/services/service"
+                },
+                {
+                    title: "AI for Enterprise",
+                    desc: "Transform your entire organization with custom AI swarms.",
+                    path: "/services/enterprise"
                 }
             ],
             sidebar: {
@@ -45,25 +58,23 @@ const Navbar = () => {
         },
         {
             label: 'PRODUCTS',
-            layout: 'complex', // Upgrade to rich row-based layout
+            layout: 'complex',
+            theme: 'high-contrast-strips',
             mainContent: [
                 {
                     title: "Core Platform",
                     desc: "The operating system for the agentic future. Build, deploy, and scale.",
-                    path: "/products/platform",
-                    columns: [
-                        { title: "CAPABILITIES", items: ["AI Studio", "Orchestration Engine", "Knowledge Graph", "Guardrails"] },
-                        { title: "DEVELOPER", items: ["API & SDKs", "CLI Tools", "Webhooks", "Playground"] }
-                    ]
+                    path: "/products/platform"
                 },
                 {
                     title: "Enterprise Solutions",
                     desc: "Tailored agent swarms for mission-critical business functions.",
-                    path: "/products/solutions",
-                    columns: [
-                        { title: "BY INDUSTRY", items: ["Financial Services", "Healthcare", "Retail & E-commerce", "Manufacturing"] },
-                        { title: "BY FUNCTION", items: ["Customer Experience", "HR & Talent", "IT Operations", "Sales Intelligence"] }
-                    ]
+                    path: "/products/solutions"
+                },
+                {
+                    title: "Agentic Solutions",
+                    desc: "Pre-configured AI agent bundles for rapid deployment and ROI.",
+                    path: "/products/agentic"
                 }
             ],
             sidebar: {
@@ -75,7 +86,6 @@ const Navbar = () => {
                 quickLinks: ["Pricing", "Integrations", "Security", "Roadmap"]
             }
         },
-        { label: 'SHOWCASE', path: '/showcase' },
         {
             label: 'MORE',
             layout: 'more-complex',
@@ -145,10 +155,10 @@ const Navbar = () => {
                         <li
                             key={index}
                             className="navbar-item"
-                            onMouseEnter={() => (item.dropdown || item.layout || item.megaMenu) && setActiveDropdown(item.label)}
-                            onMouseLeave={() => setActiveDropdown(null)}
+                            onMouseEnter={() => (item.dropdown || item.layout || item.megaMenu) && handleMouseEnter(item.label)}
+                            onMouseLeave={handleMouseLeave}
                         >
-                            {/* Complex Mega Menu Logic */}
+                            {/* Complex Striped Mega Menu Logic */}
                             {item.layout === 'complex' ? (
                                 <>
                                     <span className="navbar-link">
@@ -156,55 +166,23 @@ const Navbar = () => {
                                         <ChevronDown className="dropdown-icon" size={16} />
                                     </span>
                                     {activeDropdown === item.label && (
-                                        <div className="dropdown-menu mega-complex-container">
-                                            <div className="complex-grid">
-                                                {/* Main Content Rows */}
-                                                <div className="complex-main">
-                                                    {item.mainContent.map((row, rIdx) => (
-                                                        <div key={rIdx} className="complex-row">
-                                                            <div className="complex-row-header">
+                                        <div className={`dropdown-menu mega-complex-container ${item.theme ? `theme-${item.theme}` : ''}`}>
+                                            <div className="mega-strips-wrapper">
+                                                {item.mainContent.map((row, rIdx) => (
+                                                    <Link
+                                                        key={rIdx}
+                                                        to={row.path}
+                                                        className={`mega-strip strip-${rIdx}`}
+                                                    >
+                                                        <div className="strip-content">
+                                                            <div className="strip-info">
                                                                 <h4>{row.title}</h4>
                                                                 <p>{row.desc}</p>
-                                                                <Link to={row.path} className="complex-cta">LEARN MORE</Link>
                                                             </div>
-                                                            <div className="complex-row-columns">
-                                                                {row.columns.map((col, cIdx) => (
-                                                                    <div key={cIdx} className="complex-column">
-                                                                        <h5>{col.title}</h5>
-                                                                        <ul>
-                                                                            {col.items.map((it, iIdx) => (
-                                                                                <li key={iIdx}>{it}</li>
-                                                                            ))}
-                                                                        </ul>
-                                                                    </div>
-                                                                ))}
-                                                            </div>
+                                                            <div className="strip-chevron">→</div>
                                                         </div>
-                                                    ))}
-                                                </div>
-
-                                                {/* Sidebar */}
-                                                <div className="complex-sidebar">
-                                                    <div className="sidebar-section">
-                                                        <h4>{item.sidebar.title}</h4>
-                                                        <div className="sidebar-cards">
-                                                            {item.sidebar.resources.map((res, resIdx) => (
-                                                                <div key={resIdx} className="sidebar-card">
-                                                                    <div className="card-icon"></div>
-                                                                    <span>{res.title}</span>
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    </div>
-                                                    <div className="sidebar-section">
-                                                        <h4>QUICK LINKS</h4>
-                                                        <ul className="quick-links">
-                                                            {item.sidebar.quickLinks.map((link, lIdx) => (
-                                                                <li key={lIdx}><a href="#">{link}</a></li>
-                                                            ))}
-                                                        </ul>
-                                                    </div>
-                                                </div>
+                                                    </Link>
+                                                ))}
                                             </div>
                                         </div>
                                     )}
@@ -286,7 +264,7 @@ const Navbar = () => {
                                         <ChevronDown className="dropdown-icon" size={16} />
                                     </span>
                                     {activeDropdown === item.label && (
-                                        <div className="dropdown-menu mega-menu-container"> {/* Re-using dropdown-menu class for base anims */}
+                                        <div className="dropdown-menu mega-menu-container">
                                             <div className="mega-menu-grid">
                                                 {/* Left Side: Sections */}
                                                 <div className="mega-sections-group">
@@ -358,20 +336,26 @@ const Navbar = () => {
 
                 {/* Right Side Actions */}
                 <div className="navbar-actions">
-                    <div className={`search-container ${isSearchOpen ? 'active' : ''}`}>
-                        <button
-                            className="search-toggle"
-                            aria-label="Search"
-                            onClick={() => setIsSearchOpen(!isSearchOpen)}
-                        >
-                            <Search size={22} color="white" strokeWidth={2.5} />
-                        </button>
-                        <input
-                            type="text"
-                            placeholder="Search..."
-                            className="search-input"
-                        />
+                    <div className="desktop-search">
+                        <div className={`search-container ${isSearchOpen ? 'active' : ''}`}>
+                            <button
+                                className="search-toggle"
+                                aria-label="Search"
+                                onClick={() => setIsSearchOpen(!isSearchOpen)}
+                            >
+                                <Search size={22} color="white" strokeWidth={2.5} />
+                            </button>
+                            <input
+                                type="text"
+                                placeholder="Search..."
+                                className="search-input"
+                            />
+                        </div>
                     </div>
+                    <Link to="/showcase" className="showcase-button">
+                        <Sparkles size={18} />
+                        <span>Showcase</span>
+                    </Link>
                     <button
                         className="contact-button"
                         onClick={() => setIsContactOpen(true)}
@@ -394,6 +378,18 @@ const Navbar = () => {
             {/* Mobile Menu Overlay */}
             <div className={`mobile-nav ${isMobileMenuOpen ? 'open' : ''}`}>
                 <div className="mobile-nav-content">
+                    {/* Mobile Search - Integrated at top */}
+                    <div className="mobile-search-wrapper">
+                        <div className="mobile-search-bar">
+                            <Search size={20} className="mobile-search-icon" />
+                            <input
+                                type="text"
+                                placeholder="Search Dreamatic..."
+                                className="mobile-search-input"
+                            />
+                        </div>
+                    </div>
+
                     {navItems.map((item, index) => (
                         <div key={index} className="mobile-nav-item">
                             {(item.dropdown || item.layout || item.megaMenu) ? (
@@ -408,21 +404,15 @@ const Navbar = () => {
                                             className={`dropdown-arrow ${activeDropdown === item.label ? 'rotated' : ''}`}
                                         />
                                     </button>
-                                    <div className={`mobile-dropdown ${activeDropdown === item.label ? 'open' : ''}`}>
+                                    <div className={`mobile-dropdown ${activeDropdown === item.label ? 'open' : ''} ${item.theme ? `theme-${item.theme}` : ''}`}>
 
                                         {/* Logic for 'complex' (Services, Products) */}
                                         {item.layout === 'complex' && item.mainContent.map((row, rIdx) => (
                                             <div key={rIdx} className="mobile-group">
-                                                <span className="mobile-group-title">{row.title}</span>
-                                                {row.columns.map((col, cIdx) => (
-                                                    <div key={cIdx} className="mobile-subgroup">
-                                                        {col.items.map((it, iIdx) => (
-                                                            <Link key={iIdx} to={row.path} className="mobile-dropdown-link" onClick={() => setIsMobileMenuOpen(false)}>
-                                                                {it}
-                                                            </Link>
-                                                        ))}
-                                                    </div>
-                                                ))}
+                                                <Link to={row.path} className="mobile-dropdown-link" onClick={() => setIsMobileMenuOpen(false)}>
+                                                    <span className="mobile-group-title">{row.title}</span>
+                                                    <span className="mobile-group-desc">{row.desc}</span>
+                                                </Link>
                                             </div>
                                         ))}
 

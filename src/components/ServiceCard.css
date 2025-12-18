@@ -21,7 +21,6 @@
     background: rgba(255, 255, 255, 0.03);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 
@@ -113,88 +112,84 @@
 /* Colored Glass Themes */
 .service-card.blue {
     background: linear-gradient(135deg, rgba(59, 130, 246, 0.25), rgba(37, 99, 235, 0.15));
-    border-color: rgba(59, 130, 246, 0.4);
     box-shadow: 0 4px 30px rgba(59, 130, 246, 0.1);
 }
 
 .service-card.blue:hover {
     background: linear-gradient(135deg, rgba(59, 130, 246, 0.35), rgba(37, 99, 235, 0.25));
-    border-color: rgba(59, 130, 246, 0.6);
     box-shadow: 0 20px 40px rgba(59, 130, 246, 0.25);
 }
 
 .service-card.gray {
     background: linear-gradient(135deg, rgba(107, 114, 128, 0.25), rgba(75, 85, 99, 0.15));
-    border-color: rgba(107, 114, 128, 0.4);
     box-shadow: 0 4px 30px rgba(107, 114, 128, 0.1);
 }
 
 .service-card.gray:hover {
     background: linear-gradient(135deg, rgba(107, 114, 128, 0.35), rgba(75, 85, 99, 0.25));
-    border-color: rgba(107, 114, 128, 0.6);
     box-shadow: 0 20px 40px rgba(107, 114, 128, 0.25);
 }
 
 .service-card.orange {
     background: linear-gradient(135deg, rgba(249, 115, 22, 0.25), rgba(234, 88, 12, 0.15));
-    border-color: rgba(249, 115, 22, 0.4);
     box-shadow: 0 4px 30px rgba(249, 115, 22, 0.1);
 }
 
 .service-card.orange:hover {
     background: linear-gradient(135deg, rgba(249, 115, 22, 0.35), rgba(234, 88, 12, 0.25));
-    border-color: rgba(249, 115, 22, 0.6);
     box-shadow: 0 20px 40px rgba(249, 115, 22, 0.25);
 }
 
 .service-card.pink {
     background: linear-gradient(135deg, rgba(236, 72, 153, 0.25), rgba(219, 39, 119, 0.15));
-    border-color: rgba(236, 72, 153, 0.4);
     box-shadow: 0 4px 30px rgba(236, 72, 153, 0.1);
 }
 
 .service-card.pink:hover {
     background: linear-gradient(135deg, rgba(236, 72, 153, 0.35), rgba(219, 39, 119, 0.25));
-    border-color: rgba(236, 72, 153, 0.6);
     box-shadow: 0 20px 40px rgba(236, 72, 153, 0.25);
 }
 
 .service-card.purple {
     background: linear-gradient(135deg, rgba(139, 92, 246, 0.25), rgba(124, 58, 237, 0.15));
-    border-color: rgba(139, 92, 246, 0.4);
     box-shadow: 0 4px 30px rgba(139, 92, 246, 0.1);
 }
 
 .service-card.purple:hover {
     background: linear-gradient(135deg, rgba(139, 92, 246, 0.35), rgba(124, 58, 237, 0.25));
-    border-color: rgba(139, 92, 246, 0.6);
     box-shadow: 0 20px 40px rgba(139, 92, 246, 0.25);
 }
 
 /* Responsive */
 @media (max-width: 768px) {
     .service-card {
-        min-width: 320px;
-        max-width: 320px;
+        width: 90vw;
+        min-width: 280px;
+        max-width: 340px;
+        height: auto;
+        min-height: 140px;
         padding: var(--spacing-md);
+        margin-right: var(--spacing-md);
     }
 
     .service-icon {
-        width: 48px;
-        height: 48px;
-        min-width: 48px;
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
     }
 
     .icon-svg {
-        width: 28px;
-        height: 28px;
+        width: 24px;
+        height: 24px;
     }
 
     .service-title {
-        font-size: 1rem;
+        font-size: 0.95rem;
     }
 
     .service-description {
-        font-size: 0.8rem;
+        font-size: 0.75rem;
+        -webkit-line-clamp: 3;
+        line-clamp: 3;
     }
 }

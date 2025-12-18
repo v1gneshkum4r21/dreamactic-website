@@ -1,8 +1,15 @@
 import { createPortal } from 'react-dom';
+import { useState } from 'react';
 import { X, Mail, Phone, MapPin, Send } from 'lucide-react';
 import './ContactModal.css';
 
 const ContactModal = ({ isOpen, onClose }) => {
+    const [activeInfo, setActiveInfo] = useState(null);
+
+    const toggleInfo = (id) => {
+        setActiveInfo(activeInfo === id ? null : id);
+    };
+
     if (!isOpen) return null;
 
     return createPortal(
@@ -19,23 +26,32 @@ const ContactModal = ({ isOpen, onClose }) => {
 
                 <div className="contact-content-grid">
                     <div className="contact-info">
-                        <div className="info-item">
+                        <div
+                            className={`info-item strip-lavender ${activeInfo === 'email' ? 'expanded' : ''}`}
+                            onClick={() => toggleInfo('email')}
+                        >
                             <div className="icon-box"><Mail size={20} /></div>
-                            <div>
+                            <div className="info-text">
                                 <h3>Email</h3>
                                 <p>hello@dreamatic.ai</p>
                             </div>
                         </div>
-                        <div className="info-item">
+                        <div
+                            className={`info-item strip-blue ${activeInfo === 'phone' ? 'expanded' : ''}`}
+                            onClick={() => toggleInfo('phone')}
+                        >
                             <div className="icon-box"><Phone size={20} /></div>
-                            <div>
+                            <div className="info-text">
                                 <h3>Phone</h3>
                                 <p>+1 (555) 123-4567</p>
                             </div>
                         </div>
-                        <div className="info-item">
+                        <div
+                            className={`info-item strip-mint ${activeInfo === 'office' ? 'expanded' : ''}`}
+                            onClick={() => toggleInfo('office')}
+                        >
                             <div className="icon-box"><MapPin size={20} /></div>
-                            <div>
+                            <div className="info-text">
                                 <h3>Office</h3>
                                 <p>123 Innovation Dr, Tech City</p>
                             </div>

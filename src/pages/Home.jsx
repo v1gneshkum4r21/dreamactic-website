@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import { Image, Settings, Workflow, Bot, Sparkles } from 'lucide-react';
 import HeroCarousel from '../components/HeroCarousel';
 import ServiceCard from '../components/ServiceCard';
@@ -6,6 +7,15 @@ import './Home.css';
 
 const Home = () => {
     const navigate = useNavigate();
+
+    useEffect(() => {
+        // Lock scroll on mount
+        document.body.classList.add('home-locked');
+        return () => {
+            // Unlock scroll on unmount
+            document.body.classList.remove('home-locked');
+        };
+    }, []);
 
     const services = [
         {
