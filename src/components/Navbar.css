@@ -24,39 +24,91 @@
 }
 
 /* Logo */
+/* Logo Style - Exact Match to Navbar Links */
 .navbar-logo {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    justify-content: center;
+    gap: 1rem;
     text-decoration: none;
     transition: all 0.3s ease;
+    position: relative;
+    padding: 0;
+    border-radius: 8px;
+    background: transparent;
+    overflow: hidden;
+    z-index: 10;
+    /* Strict dimensions */
+    height: 32px;
+    width: 120px;
+}
+
+/* Snake Border Effect - Exact Replica of .navbar-link */
+.navbar-logo::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 8px;
+    padding: 1.2px;
+    background: conic-gradient(from var(--angle),
+            transparent 75%,
+            #c4b5fd,
+            #a78bfa,
+            #8b5cf6,
+            #a78bfa,
+            #c4b5fd);
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    /* Hidden by default, like links */
+    transition: opacity 0.3s ease;
+    animation: snake-rotate 3s linear infinite;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.navbar-logo:hover::before {
+    opacity: 1;
+    /* Show on hover */
+}
+
+/* Remove old bracket styles */
+.navbar-logo::after {
+    display: none;
 }
 
 .navbar-logo:hover {
     transform: scale(1.05);
+    /* Keep strict internal scale */
 }
 
-.logo-placeholder {
-    width: 40px;
-    height: 40px;
-    background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(124, 58, 237, 0.1));
-    border: 2px solid rgba(139, 92, 246, 0.3);
-    border-radius: 0.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.7rem;
-    font-weight: 700;
-    color: rgba(139, 92, 246, 0.9);
-    letter-spacing: 0.5px;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 20px rgba(139, 92, 246, 0.2);
+/* Logo Image - Keeping the crop */
+.logo-image {
+    width: 125%;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    position: relative;
+    z-index: 1;
 }
 
-.navbar-logo:hover .logo-placeholder {
-    border-color: rgba(139, 92, 246, 0.6);
-    box-shadow: 0 0 30px rgba(139, 92, 246, 0.4);
+
+@keyframes borderRotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
+
 
 /* Navigation Menu */
 .navbar-menu {
@@ -178,6 +230,7 @@
     top: 70px;
     left: 0;
     width: 100%;
+    max-width: 100vw;
     /* Full Width */
     background: rgba(10, 10, 10, 0.95);
     backdrop-filter: blur(30px);
@@ -191,6 +244,7 @@
     display: flex;
     justify-content: center;
     gap: 1rem;
+    overflow-x: hidden;
 
     animation: dropdownSlideDown 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     z-index: 998;
@@ -1376,8 +1430,11 @@
 
 .mobile-nav-link:hover,
 .mobile-nav-link.active {
-    color: #8b5cf6;
-    padding-left: 0.5rem;
+    color: #a78bfa;
+    padding-left: 1rem;
+    background: linear-gradient(90deg, rgba(139, 92, 246, 0.1) 0%, transparent 100%);
+    border-left: 3px solid #8b5cf6;
+    /* Accent line */
 }
 
 .dropdown-arrow {
@@ -1414,18 +1471,47 @@
     padding: 1rem 1.25rem;
     /* Increased for better touch targets */
     border-radius: 12px;
-    transition: all 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     border: 1px solid transparent;
     cursor: pointer;
+    position: relative;
+    overflow: hidden;
 }
 
 .mobile-dropdown-link:hover,
 .mobile-dropdown-link:active,
 .mobile-dropdown-link:focus {
-    color: #a78bfa !important;
-    background: rgba(255, 255, 255, 0.03) !important;
-    border-color: rgba(139, 92, 246, 0.2) !important;
-    transform: translateX(4px) !important;
+    color: #fff !important;
+    background: rgba(139, 92, 246, 0.15);
+    /* No !important to allow overrides */
+    border-color: rgba(139, 92, 246, 0.4) !important;
+    transform: translateX(6px) !important;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.15);
+}
+
+/* ... existing styles ... */
+
+/* Hover Effects for Themed Strips */
+.mobile-dropdown.theme-pastel-strips .mobile-dropdown-link:hover {
+    background: inherit;
+    /* Keep original pastel color */
+    filter: brightness(1.1) saturate(1.1);
+    /* Enhance it */
+    transform: scale(1.02) !important;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
+    z-index: 2;
+    border-color: transparent !important;
+    /* No purple border for pastel */
+}
+
+.mobile-dropdown.theme-high-contrast-strips .mobile-dropdown-link:hover {
+    background: inherit;
+    /* Keep original dark color */
+    filter: brightness(1.3);
+    /* Lighten slightly */
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    transform: translateX(6px) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5) !important;
 }
 
 .mobile-group {
@@ -1558,6 +1644,21 @@
     color: rgba(255, 255, 255, 0.5);
 }
 
+/* Hover Effects for Themed Strips */
+.mobile-dropdown.theme-pastel-strips .mobile-dropdown-link:hover {
+    filter: brightness(1.1) contrast(1.05);
+    transform: scale(1.02) !important;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
+    z-index: 2;
+}
+
+.mobile-dropdown.theme-high-contrast-strips .mobile-dropdown-link:hover {
+    background: #1a1a24 !important;
+    border-color: rgba(139, 92, 246, 0.5) !important;
+    transform: translateX(6px) !important;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.1) !important;
+}
+
 @keyframes slideDown {
     from {
         opacity: 0;
@@ -1576,6 +1677,11 @@
         /* Show only on mobile */
         align-items: center;
         justify-content: center;
+    }
+
+    .navbar-logo {
+        width: 100px;
+        height: 28px;
     }
 
     /* Mobile Search Styles */
@@ -1628,6 +1734,11 @@
 @media (max-width: 500px) {
     .navbar-container {
         padding: 0 0.75rem;
+    }
+
+    .navbar-logo {
+        width: 90px;
+        height: 26px;
     }
 
     .showcase-button span,

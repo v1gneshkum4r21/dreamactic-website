@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import './HeroCarousel.css';
 
-const slides = [
+const defaultSlides = [
     {
         id: 1,
         video: "https://videos.pexels.com/video-files/3129671/3129671-uhd_2560_1440_30fps.mp4" // Neural Network
@@ -17,7 +17,7 @@ const slides = [
     }
 ];
 
-const HeroCarousel = () => {
+const HeroCarousel = ({ slides = defaultSlides }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isAutoPlaying, setIsAutoPlaying] = useState(true);
     const [touchStart, setTouchStart] = useState(0);

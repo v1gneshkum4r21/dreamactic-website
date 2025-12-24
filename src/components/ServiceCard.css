@@ -163,13 +163,16 @@
 /* Responsive */
 @media (max-width: 768px) {
     .service-card {
-        width: 90vw;
-        min-width: 280px;
-        max-width: 340px;
+        width: 260px;
+        /* Narrower to clear arrows */
+        min-width: 260px;
+        max-width: 260px;
         height: auto;
         min-height: 140px;
         padding: var(--spacing-md);
         margin-right: var(--spacing-md);
+        scroll-snap-align: center;
+        /* Snap to center */
     }
 
     .service-icon {

@@ -49,15 +49,84 @@ body.home-locked {
 
 .services-strip {
     display: flex;
-    /* geometric precision for seamless loop: use margin on items instead of gap */
     gap: 0;
-    animation: scroll-left 40s linear infinite;
-    width: fit-content;
+    width: 100%;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    /* Hide scrollbar */
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE/Edge */
     padding: var(--spacing-md) 0;
+    cursor: grab;
+    scroll-snap-type: x mandatory;
+    /* Enable snap */
 }
 
-.services-strip:hover {
-    animation-play-state: paused;
+.services-strip:active {
+    cursor: grabbing;
+}
+
+.services-strip::-webkit-scrollbar {
+    display: none;
+    /* Chrome/Safari */
+}
+
+/* Unique Styled Scrollers */
+.nav-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    /* Subtle border */
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    z-index: 20;
+    backdrop-filter: blur(12px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    outline: none;
+}
+
+.nav-arrow:hover {
+    background: rgba(139, 92, 246, 0.2);
+    border-color: rgba(139, 92, 246, 0.5);
+    color: #fff;
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 0 25px rgba(139, 92, 246, 0.4);
+}
+
+.nav-arrow.left {
+    left: 2rem;
+}
+
+.nav-arrow.right {
+    right: 2rem;
+}
+
+@media (max-width: 768px) {
+    .nav-arrow {
+        width: 40px;
+        height: 40px;
+        background: rgba(0, 0, 0, 0.6);
+        /* Darker for better visibility */
+    }
+
+    .nav-arrow.left {
+        left: 0.5rem;
+    }
+
+    .nav-arrow.right {
+        right: 0.5rem;
+    }
 }
 
 @keyframes scroll-left {

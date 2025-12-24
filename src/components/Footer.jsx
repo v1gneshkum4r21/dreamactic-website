@@ -64,7 +64,7 @@ const Footer = () => {
                         })}
                     </div>
                     <div className="footer-copyright">
-                        <p>DREAMATIC © 2025 ALL RIGHTS RESERVED</p>
+                        <p>DREAMACTIC © 2025 ALL RIGHTS RESERVED</p>
                     </div>
                 </div>
             </div>

@@ -25,6 +25,11 @@ const Navbar = () => {
         }, 150); // 150ms delay to bridge potential gaps
     };
 
+    const handleLinkClick = () => {
+        setActiveDropdown(null);
+        setIsMobileMenuOpen(false);
+    };
+
     const navItems = [
         {
             label: 'SERVICES',
@@ -59,7 +64,7 @@ const Navbar = () => {
         {
             label: 'PRODUCTS',
             layout: 'complex',
-            theme: 'high-contrast-strips',
+            theme: 'pastel-strips',
             mainContent: [
                 {
                     title: "Core Platform",
@@ -88,55 +93,32 @@ const Navbar = () => {
         },
         {
             label: 'MORE',
-            layout: 'more-complex',
-            columns: {
-                lists: [
-                    {
-                        title: 'RESOURCES',
-                        items: [
-                            { name: 'Resource Hub', path: '/resources' },
-                            { name: 'Blog', path: '/resources/blog' },
-                            { name: 'Whitepapers', path: '/resources/whitepapers' },
-                            { name: 'Webinars', path: '/resources/webinars' },
-                            { name: 'AI Research', path: '/resources/research' }
-                        ]
-                    },
-                    {
-                        title: 'COMPANY',
-                        items: [
-                            { name: 'About Us', path: '/about' },
-                            { name: 'Leadership', path: '/about/leadership' },
-                            { name: 'Customers', path: '/about/customers' },
-                            { name: 'Partners', path: '/about/partners' },
-                            { name: 'Careers', path: '/about/careers' }
-                        ]
-                    },
-                    {
-                        title: 'SUPPORT',
-                        items: [
-                            { name: 'Documentation', path: '/support/docs' },
-                            { name: 'Get Support', path: '/support' },
-                            { name: 'Community', path: '/support/community' },
-                            { name: 'Contact Us', path: '/contact' }
-                        ]
-                    }
-                ],
-                guides: {
-                    title: 'AGENTIC AI GUIDES',
-                    items: [
-                        { title: 'Dreamatic Leader', desc: 'Top performer in AI Agents', color: 'bg-blue-500' },
-                        { title: 'Generative AI 101', desc: 'The complete guide', color: 'bg-purple-500' },
-                        { title: 'CXO Toolkit', desc: 'Strategy for success', color: 'bg-indigo-500' }
-                    ]
+            layout: 'complex',
+            theme: 'pastel-strips',
+            mainContent: [
+                {
+                    title: "Company",
+                    desc: "About Us, Leadership, Customers, and Careers.",
+                    path: "/about"
                 },
-                sidebar: {
-                    title: 'UPCOMING EVENT',
-                    event: { title: 'AI SUMMIT \'25', date: 'JAN 15-17 | SF', desc: 'The future of Agentic AI' },
-                    actions: [
-                        { title: 'Talk to an expert', desc: 'Schedule a call', link: '/contact' },
-                        { title: 'Request a Demo', desc: 'See it in action', link: '/demo' }
-                    ]
+                {
+                    title: "Resources",
+                    desc: "Resource Hub, Blog, Whitepapers, and Research.",
+                    path: "/resources"
+                },
+                {
+                    title: "Support",
+                    desc: "Documentation, Community, and Help Center.",
+                    path: "/support"
                 }
+            ],
+            sidebar: {
+                title: "UPCOMING EVENT",
+                resources: [
+                    { title: "AI Summit '25", type: "Event" },
+                    { title: "Jan 15-17 | SF", type: "Date" }
+                ],
+                quickLinks: ["Contact Us", "Request Demo", "Legal", "Privacy"]
             }
         }
     ];
@@ -146,7 +128,11 @@ const Navbar = () => {
             <div className="navbar-container">
                 {/* Logo */}
                 <Link to="/" className="navbar-logo">
-                    <div className="logo-placeholder">LOGO</div>
+                    <img
+                        src="/assets/logo/191225_Logo_PreFIN_Am.png"
+                        alt="Dreamatic Logo"
+                        className="logo-image"
+                    />
                 </Link>
 
                 {/* Navigation Items */}
@@ -173,6 +159,7 @@ const Navbar = () => {
                                                         key={rIdx}
                                                         to={row.path}
                                                         className={`mega-strip strip-${rIdx}`}
+                                                        onClick={handleLinkClick}
                                                     >
                                                         <div className="strip-content">
                                                             <div className="strip-info">
@@ -204,7 +191,7 @@ const Navbar = () => {
                                                             <ul>
                                                                 {list.items.map((it, iIdx) => (
                                                                     <li key={iIdx}>
-                                                                        <Link to={it.path}>{it.name}</Link>
+                                                                        <Link to={it.path} onClick={handleLinkClick}>{it.name}</Link>
                                                                     </li>
                                                                 ))}
                                                             </ul>
