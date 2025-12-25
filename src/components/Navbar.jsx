@@ -22,7 +22,7 @@ const Navbar = () => {
     const handleMouseLeave = () => {
         closeTimeoutRef.current = setTimeout(() => {
             setActiveDropdown(null);
-        }, 150); // 150ms delay to bridge potential gaps
+        }, 50); // Reduced to 50ms for snappier response
     };
 
     const handleLinkClick = () => {
