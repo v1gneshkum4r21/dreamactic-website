@@ -164,15 +164,17 @@ const ServicePage = () => {
                     <h1 style={{
                         fontSize: '3rem',
                         fontWeight: '800',
-                        lineHeight: '1',
-                        color: '#fff',
-                        letterSpacing: '-0.03em',
-                        background: 'linear-gradient(180deg, #fff 0%, #ccc 100%)',
-                        WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent'
+                        lineHeight: '1.2',
+                        color: '#fff'
                     }}>
-                        Industry-Specific<br />
-                        <span style={{ color: '#3b82f6' }}>AI Solutions</span>
+                        <span style={{
+                            color: 'transparent',
+                            WebkitTextStroke: '1px rgba(255, 255, 255, 0.5)',
+                            marginRight: '12px'
+                        }}>
+                            Industry-Specific
+                        </span>
+                        <span>AI Solutions</span>
                     </h1>
                 </div>
 

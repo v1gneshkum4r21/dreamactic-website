@@ -85,54 +85,62 @@ const Work = () => {
                                 onClick={() => setSelectedId(solution.id)}
                                 style={{
                                     padding: '1.25rem',
-                                    background: isSelected ? `linear-gradient(135deg, ${solution.iconColor}15, transparent)` : 'rgba(255,255,255,0.03)',
-                                    border: `1px solid ${isSelected ? solution.iconColor : 'rgba(255,255,255,0.05)'}`,
+                                    // Solid colors logic: Solid accent if selected, dark solid if not
+                                    background: isSelected ? solution.iconColor : 'rgba(255,255,255,0.03)',
+                                    // Subtle border, colored if selected
+                                    border: isSelected ? `1px solid ${solution.iconColor}` : '1px solid rgba(255,255,255,0.05)',
                                     borderRadius: '16px',
                                     cursor: 'pointer',
-                                    transition: 'all 0.2s ease',
+                                    // Figma-like animation: spring physics feel
+                                    transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
                                     display: 'flex',
                                     flexDirection: 'column',
                                     justifyContent: 'space-between',
                                     gap: '1rem',
                                     position: 'relative',
-                                    overflow: 'hidden'
+                                    overflow: 'hidden',
+                                    transform: isSelected ? 'scale(1.02)' : 'scale(1)',
+                                    boxShadow: isSelected ? `0 10px 30px -10px ${solution.iconColor}80` : 'none'
                                 }}
                                 onMouseEnter={(e) => {
                                     if (!isSelected) {
                                         e.currentTarget.style.background = 'rgba(255,255,255,0.06)';
                                         e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)';
-                                        e.currentTarget.style.transform = 'translateY(-2px)';
+                                        e.currentTarget.style.transform = 'scale(1.02)';
                                     }
                                 }}
                                 onMouseLeave={(e) => {
                                     if (!isSelected) {
                                         e.currentTarget.style.background = 'rgba(255,255,255,0.03)';
                                         e.currentTarget.style.borderColor = 'rgba(255,255,255,0.05)';
-                                        e.currentTarget.style.transform = 'translateY(0)';
+                                        e.currentTarget.style.transform = 'scale(1)';
                                     }
                                 }}
                             >
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                                     <div style={{
-                                        background: isSelected ? solution.iconColor : 'rgba(255,255,255,0.05)',
+                                        // Icon box: Dark background for contrast if selected
+                                        background: isSelected ? 'rgba(0,0,0,0.2)' : 'rgba(255,255,255,0.05)',
                                         width: '40px',
                                         height: '40px',
                                         borderRadius: '10px',
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'center',
-                                        transition: 'all 0.2s'
+                                        transition: 'all 0.3s ease'
                                     }}>
-                                        <solution.icon size={20} color={isSelected ? '#000' : solution.iconColor} strokeWidth={2} />
+                                        {/* Icon color: White if selected (solid background), Accent if not */}
+                                        <solution.icon size={20} color={isSelected ? '#fff' : solution.iconColor} strokeWidth={2} />
                                     </div>
-                                    {isSelected && <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: solution.iconColor, boxShadow: `0 0 10px ${solution.iconColor}` }}></div>}
+                                    {isSelected && <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#fff', boxShadow: '0 0 10px rgba(255,255,255,0.5)' }}></div>}
                                 </div>
 
                                 <div>
+                                    {/* Text colors: White/Grey */}
                                     <h3 style={{ fontSize: '0.95rem', fontWeight: '700', color: isSelected ? '#fff' : '#ccc', marginBottom: '0.15rem', lineHeight: '1.2' }}>
                                         {solution.title}
                                     </h3>
-                                    <p style={{ fontSize: '0.75rem', color: isSelected ? solution.iconColor : '#666', fontWeight: '500', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                                    <p style={{ fontSize: '0.75rem', color: isSelected ? 'rgba(255,255,255,0.9)' : '#666', fontWeight: '500', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                                         {solution.subtitle}
                                     </p>
                                 </div>
