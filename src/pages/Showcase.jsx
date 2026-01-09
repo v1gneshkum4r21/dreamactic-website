@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import './Showcase.css';
-import { Play, Sparkles, Search } from 'lucide-react';
+import { Play, Sparkles, Search, X } from 'lucide-react';
 
 const SHOWCASE_ITEMS = [
     {
@@ -324,7 +324,7 @@ const SHOWCASE_ITEMS = [
     }
 ];
 
-const MediaCard = ({ item }) => {
+const MediaCard = ({ item, onSelect }) => {
     const videoRef = useRef(null);
 
     useEffect(() => {
@@ -336,7 +336,10 @@ const MediaCard = ({ item }) => {
     }, [item.type]);
 
     return (
-        <div className={`track-card ${item.type}`}>
+        <div
+            className={`track-card ${item.type}`}
+            onClick={() => onSelect(item)}
+        >
             {item.type === 'video' ? (
                 <div className="video-container">
                     <video
@@ -364,20 +367,58 @@ const MediaCard = ({ item }) => {
     );
 };
 
+const MediaPreview = ({ item, onClose }) => {
+    const previewVideoRef = useRef(null);
+
+    useEffect(() => {
+        if (item.type === 'video' && previewVideoRef.current) {
+            previewVideoRef.current.play().catch(() => { });
+        }
+    }, [item.type]);
+
+    return (
+        <div className="media-preview-overlay">
+            <div className="preview-backdrop" onClick={onClose} />
+            <div className="preview-container">
+                <button className="preview-close" onClick={onClose}>
+                    <X size={32} />
+                </button>
+                <div className="preview-main">
+                    {item.type === 'video' ? (
+                        <video
+                            ref={previewVideoRef}
+                            src={item.videoUrl}
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            className="preview-media"
+                        />
+                    ) : (
+                        <img src={item.imageUrl} alt={item.title} className="preview-media" />
+                    )}
+                </div>
+                <div className="preview-info">
+                    <p className="preview-category">{item.category}</p>
+                    <h2 className="preview-title">{item.title}</h2>
+                    <p className="preview-desc">{item.desc}</p>
+                </div>
+            </div>
+        </div>
+    );
+};
+
 const Showcase = () => {
     const [isPaused, setIsPaused] = useState(false);
+    const [selectedItem, setSelectedItem] = useState(null);
     const [shuffledItems, setShuffledItems] = useState([]);
 
     useEffect(() => {
-        // Initial shuffle
         setShuffledItems([...SHOWCASE_ITEMS].sort(() => Math.random() - 0.5));
-
-        // Lock global body scroll to ensure only the showcase container (or internal tracks) are focused
         document.body.classList.add('showcase-page-locked');
         return () => document.body.classList.remove('showcase-page-locked');
     }, []);
 
-    // Partition items for tracks
     const columns = [[], [], [], []];
     shuffledItems.forEach((item, idx) => columns[idx % 4].push(item));
 
@@ -398,34 +439,46 @@ const Showcase = () => {
                 onMouseLeave={() => setIsPaused(false)}
             >
                 <div className="cinematic-viewport">
-                    {/* Vertical Tracks (Desktop/Tablet) */}
                     <div className="vertical-grid-container">
                         {columns.map((col, idx) => (
                             <div key={idx} className={`vertical-track ${idx % 2 === 0 ? 'track-down' : 'track-up'}`}>
                                 <div className="track-content">
                                     {col.map((item, iOffset) => (
-                                        <MediaCard key={`col-${idx}-${item.id}-${iOffset}`} item={item} />
+                                        <MediaCard
+                                            key={`col-${idx}-${item.id}-${iOffset}`}
+                                            item={item}
+                                            onSelect={setSelectedItem}
+                                        />
                                     ))}
-                                    {/* Duplicate for infinite loop */}
                                     {col.map((item, iOffset) => (
-                                        <MediaCard key={`col-dup-${idx}-${item.id}-${iOffset}`} item={item} />
+                                        <MediaCard
+                                            key={`col-dup-${idx}-${item.id}-${iOffset}`}
+                                            item={item}
+                                            onSelect={setSelectedItem}
+                                        />
                                     ))}
                                 </div>
                             </div>
                         ))}
                     </div>
 
-                    {/* Horizontal Tracks (Mobile) */}
                     <div className="horizontal-grid-container">
                         {rows.map((row, idx) => (
                             <div key={idx} className={`horizontal-track ${idx % 2 === 0 ? 'track-left' : 'track-right'}`}>
                                 <div className="horizontal-content">
                                     {row.map((item, iOffset) => (
-                                        <MediaCard key={`row-${idx}-${item.id}-${iOffset}`} item={item} />
+                                        <MediaCard
+                                            key={`row-${idx}-${item.id}-${iOffset}`}
+                                            item={item}
+                                            onSelect={setSelectedItem}
+                                        />
                                     ))}
-                                    {/* Duplicate for infinite loop */}
                                     {row.map((item, iOffset) => (
-                                        <MediaCard key={`row-dup-${idx}-${item.id}-${iOffset}`} item={item} />
+                                        <MediaCard
+                                            key={`row-dup-${idx}-${item.id}-${iOffset}`}
+                                            item={item}
+                                            onSelect={setSelectedItem}
+                                        />
                                     ))}
                                 </div>
                             </div>
@@ -433,6 +486,13 @@ const Showcase = () => {
                     </div>
                 </div>
             </main>
+
+            {selectedItem && (
+                <MediaPreview
+                    item={selectedItem}
+                    onClose={() => setSelectedItem(null)}
+                />
+            )}
         </div>
     );
 };
