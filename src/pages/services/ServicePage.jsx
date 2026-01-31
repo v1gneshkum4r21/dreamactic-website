@@ -249,7 +249,7 @@ const ServicePage = () => {
             <div style={{ width: '40%', borderRight: '1px solid #2a2a2a', display: 'flex', flexDirection: 'column', padding: '110px 2.5rem 2rem', background: '#050505' }}>
                 <div style={{ marginBottom: '3rem' }}>
                     <div style={{
-                        fontSize: '0.85rem',
+                        fontSize: '0.9rem',
                         fontWeight: '700',
                         marginBottom: '1rem',
                         letterSpacing: '0.2em',
@@ -260,7 +260,7 @@ const ServicePage = () => {
                         Specialized Services
                     </div>
                     <h1 style={{
-                        fontSize: '3rem',
+                        fontSize: 'clamp(2.5rem, 3vw, 3.5rem)',
                         fontWeight: '800',
                         lineHeight: '1.2',
                         color: '#fff'
@@ -369,10 +369,10 @@ const ServicePage = () => {
                                 </div>
 
                                 <div style={{ position: 'relative', zIndex: 2 }}>
-                                    <h3 style={{ fontSize: '0.95rem', fontWeight: '700', color: isSelected ? '#fff' : '#ccc', marginBottom: '0.15rem', lineHeight: '1.2' }}>
+                                    <h3 style={{ fontSize: '1rem', fontWeight: '700', color: isSelected ? '#fff' : '#ccc', marginBottom: '0.15rem', lineHeight: '1.2' }}>
                                         {offering.title}
                                     </h3>
-                                    <p style={{ fontSize: '0.75rem', color: isSelected ? 'rgba(255,255,255,0.9)' : '#666', fontWeight: '500', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                                    <p style={{ fontSize: '0.85rem', color: isSelected ? 'rgba(255,255,255,0.9)' : '#666', fontWeight: '500', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                                         {offering.subtitle}
                                     </p>
                                 </div>
@@ -393,7 +393,7 @@ const ServicePage = () => {
                 flexDirection: 'column'
             }}>
                 {/* Scrollable Content Container */}
-                <div key={selectedId} style={{
+                <div key={selectedId} className="service-page-scroll-container" style={{
                     flex: 1,
                     animation: 'fadeIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1)',
                     display: 'flex',
@@ -406,22 +406,22 @@ const ServicePage = () => {
                     paddingBottom: '4rem'
                 }}>
                     <style>{`
-                        @keyframes fadeIn {
-                            from { opacity: 0; transform: translateY(10px); }
-                            to { opacity: 1; transform: translateY(0); }
-                        }
-                        div::-webkit-scrollbar {
-                            width: 6px;
-                        }
-                        div::-webkit-scrollbar-track {
-                            background: rgba(255, 255, 255, 0.05);
-                            border-radius: 10px;
-                        }
-                        div::-webkit-scrollbar-thumb {
-                            background: ${selectedOffering.iconColor}40;
-                            border-radius: 10px;
-                        }
-                    `}</style>
+                            @keyframes fadeIn {
+                                from { opacity: 0; transform: translateY(10px); }
+                                to { opacity: 1; transform: translateY(0); }
+                            }
+                            .service-page-scroll-container::-webkit-scrollbar {
+                                width: 6px;
+                            }
+                            .service-page-scroll-container::-webkit-scrollbar-track {
+                                background: rgba(255, 255, 255, 0.05);
+                                border-radius: 10px;
+                            }
+                            .service-page-scroll-container::-webkit-scrollbar-thumb {
+                                background: ${selectedOffering.iconColor}40;
+                                border-radius: 10px;
+                            }
+                        `}</style>
 
                     {/* Feature Header with Large Icon */}
                     <div style={{
@@ -467,10 +467,10 @@ const ServicePage = () => {
                         <div style={{ flex: 1, position: 'relative', zIndex: 1 }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.75rem' }}>
                                 <div>
-                                    <h2 style={{ fontSize: 'clamp(1.8rem, 2.8vw, 3rem)', fontWeight: '800', lineHeight: '1.1', color: '#fff', letterSpacing: '-0.02em', marginBottom: '0.25rem' }}>
+                                    <h2 style={{ fontSize: 'clamp(2rem, 3vw, 3.5rem)', fontWeight: '800', lineHeight: '1.1', color: '#fff', letterSpacing: '-0.02em', marginBottom: '0.25rem' }}>
                                         {selectedOffering.title}
                                     </h2>
-                                    <p style={{ fontSize: 'clamp(0.85rem, 1vw, 1.1rem)', color: selectedOffering.iconColor, fontWeight: '700', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                                    <p style={{ fontSize: 'clamp(1rem, 1.2vw, 1.3rem)', color: selectedOffering.iconColor, fontWeight: '700', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
                                         {selectedOffering.subtitle}
                                     </p>
                                 </div>
@@ -481,7 +481,7 @@ const ServicePage = () => {
                                         background: selectedOffering.iconColor,
                                         color: '#000',
                                         fontWeight: '800',
-                                        fontSize: 'clamp(0.8rem, 0.9vw, 1rem)',
+                                        fontSize: 'clamp(0.95rem, 1vw, 1.15rem)',
                                         borderRadius: '100px',
                                         border: 'none',
                                         cursor: 'pointer',
@@ -502,7 +502,7 @@ const ServicePage = () => {
                                     Get Started <ArrowRight size={18} strokeWidth={2.5} />
                                 </button>
                             </div>
-                            <p style={{ fontSize: 'clamp(0.9rem, 1vw, 1.15rem)', color: '#b0b0b0', lineHeight: '1.6', maxWidth: '95%' }}>
+                            <p style={{ fontSize: 'clamp(1rem, 1.1vw, 1.25rem)', color: '#b0b0b0', lineHeight: '1.6', maxWidth: '95%' }}>
                                 {selectedOffering.detailedInfo}
                             </p>
                         </div>
@@ -534,7 +534,7 @@ const ServicePage = () => {
                                     border: 'none',
                                     background: activeTab === tab.id ? selectedOffering.iconColor : 'transparent',
                                     color: activeTab === tab.id ? '#000' : '#888',
-                                    fontSize: '0.9rem',
+                                    fontSize: '1rem',
                                     fontWeight: '900',
                                     cursor: 'pointer',
                                     display: 'flex',
@@ -563,10 +563,10 @@ const ServicePage = () => {
                                     display: 'flex',
                                     flexDirection: 'column'
                                 }}>
-                                    <h3 style={{ fontSize: '0.8rem', fontWeight: '800', color: '#666', marginBottom: '1.5rem', letterSpacing: '0.15em', textTransform: 'uppercase' }}>CORE FEATURES</h3>
+                                    <h3 style={{ fontSize: '0.9rem', fontWeight: '800', color: '#666', marginBottom: '1.5rem', letterSpacing: '0.15em', textTransform: 'uppercase' }}>CORE FEATURES</h3>
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                                         {selectedOffering.features.map((feature, idx) => (
-                                            <div key={idx} style={{ display: 'flex', gap: '1rem', alignItems: 'center', fontSize: '1rem', color: '#fff' }}>
+                                            <div key={idx} style={{ display: 'flex', gap: '1rem', alignItems: 'center', fontSize: '1.1rem', color: '#fff' }}>
                                                 <div style={{ width: '6px', height: '6px', background: selectedOffering.iconColor, borderRadius: '50%' }} />
                                                 {feature}
                                             </div>
@@ -582,10 +582,10 @@ const ServicePage = () => {
                                     display: 'flex',
                                     flexDirection: 'column'
                                 }}>
-                                    <h3 style={{ fontSize: '0.8rem', fontWeight: '800', color: '#666', marginBottom: '1.5rem', letterSpacing: '0.15em', textTransform: 'uppercase' }}>TARGET INDUSTRIES</h3>
+                                    <h3 style={{ fontSize: '0.9rem', fontWeight: '800', color: '#666', marginBottom: '1.5rem', letterSpacing: '0.15em', textTransform: 'uppercase' }}>TARGET INDUSTRIES</h3>
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                                         {selectedOffering.useCases.map((useCase, idx) => (
-                                            <div key={idx} style={{ padding: '0.75rem 1rem', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', color: '#ccc', fontSize: '0.9rem', fontWeight: '600', borderLeft: `2px solid ${selectedOffering.iconColor}40` }}>
+                                            <div key={idx} style={{ padding: '0.75rem 1rem', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', color: '#ccc', fontSize: '1rem', fontWeight: '600', borderLeft: `2px solid ${selectedOffering.iconColor}40` }}>
                                                 {useCase}
                                             </div>
                                         ))}
@@ -602,8 +602,8 @@ const ServicePage = () => {
                                         <div key={idx} style={{ display: 'flex', gap: '2rem', zIndex: 1 }}>
                                             <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#0a0a0a', border: `2.5px solid ${selectedOffering.iconColor}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem', fontWeight: '900', color: '#fff', flexShrink: 0 }}>{idx + 1}</div>
                                             <div>
-                                                <div style={{ color: '#fff', fontWeight: '800', fontSize: '1.1rem', marginBottom: '0.25rem' }}>{p.step}</div>
-                                                <div style={{ color: '#777', fontSize: '0.9rem', lineHeight: '1.5' }}>{p.desc}</div>
+                                                <div style={{ color: '#fff', fontWeight: '800', fontSize: '1.2rem', marginBottom: '0.25rem' }}>{p.step}</div>
+                                                <div style={{ color: '#777', fontSize: '1rem', lineHeight: '1.5' }}>{p.desc}</div>
                                             </div>
                                         </div>
                                     ))}
@@ -615,8 +615,8 @@ const ServicePage = () => {
                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem', height: '100%', animation: 'fadeIn 0.3s ease-out' }}>
                                 {selectedOffering.metrics.map((metric, idx) => (
                                     <div key={idx} style={{ background: `linear-gradient(135deg, ${selectedOffering.iconColor}10, transparent)`, borderRadius: '24px', padding: '2.5rem', border: `1.5px solid ${selectedOffering.iconColor}20`, display: 'flex', flexDirection: 'column', justifyContent: 'center', textAlign: 'center' }}>
-                                        <div style={{ fontSize: '0.8rem', fontWeight: '800', color: '#666', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '1rem' }}>{metric.label}</div>
-                                        <div style={{ fontSize: '2.5rem', fontWeight: '900', color: '#fff', letterSpacing: '-0.03em' }}>{metric.value}</div>
+                                        <div style={{ fontSize: '0.9rem', fontWeight: '800', color: '#666', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '1rem' }}>{metric.label}</div>
+                                        <div style={{ fontSize: '3rem', fontWeight: '900', color: '#fff', letterSpacing: '-0.03em' }}>{metric.value}</div>
                                         <div style={{ marginTop: '1.5rem', height: '2px', background: selectedOffering.iconColor, opacity: 0.3, width: '40%', alignSelf: 'center' }} />
                                     </div>
                                 ))}
@@ -625,14 +625,14 @@ const ServicePage = () => {
 
                         {activeTab === 'tech' && (
                             <div style={{ background: 'rgba(255, 255, 255, 0.03)', borderRadius: '24px', padding: '2.5rem', border: `1.5px solid ${selectedOffering.iconColor}20`, height: '100%', animation: 'fadeIn 0.3s ease-out' }}>
-                                <h3 style={{ fontSize: '0.8rem', fontWeight: '800', color: '#666', marginBottom: '2rem', letterSpacing: '0.15em', textTransform: 'uppercase' }}>CORE ENGINE & INFRASTRUCTURE</h3>
+                                <h3 style={{ fontSize: '0.9rem', fontWeight: '800', color: '#666', marginBottom: '2rem', letterSpacing: '0.15em', textTransform: 'uppercase' }}>CORE ENGINE & INFRASTRUCTURE</h3>
                                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginBottom: '3rem' }}>
                                     {selectedOffering.tech.map((t, idx) => (
-                                        <div key={idx} style={{ padding: '0.8rem 1.5rem', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '14px', color: '#fff', fontSize: '0.95rem', fontWeight: '700' }}>{t}</div>
+                                        <div key={idx} style={{ padding: '0.8rem 1.5rem', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '14px', color: '#fff', fontSize: '1rem', fontWeight: '700' }}>{t}</div>
                                     ))}
                                 </div>
                                 <div style={{ marginTop: 'auto', paddingTop: '2.5rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-                                    <div style={{ fontSize: '0.75rem', fontWeight: '800', color: '#444', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1.5rem' }}>Global Compute Partners</div>
+                                    <div style={{ fontSize: '0.85rem', fontWeight: '800', color: '#444', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1.5rem' }}>Global Compute Partners</div>
                                     <div style={{ display: 'flex', gap: '5rem', alignItems: 'center' }}>
                                         {[
                                             { name: 'AWS', url: 'https://www.vectorlogo.zone/logos/amazon_aws/amazon_aws-ar21.svg' },
@@ -727,7 +727,7 @@ const ServicePage = () => {
                                 background: `${selectedOffering.iconColor}10`,
                                 padding: '0.25rem 0.75rem',
                                 borderRadius: '100px',
-                                fontSize: '0.75rem',
+                                fontSize: '0.85rem',
                                 fontWeight: '700',
                                 textTransform: 'uppercase',
                                 letterSpacing: '0.1em'
@@ -735,10 +735,10 @@ const ServicePage = () => {
                                 <selectedOffering.icon size={14} />
                                 {selectedOffering.title}
                             </div>
-                            <h2 style={{ fontSize: 'clamp(1.5rem, 2vw, 2.25rem)', fontWeight: '800', lineHeight: '1.1', marginBottom: '0.5rem', color: '#fff' }}>
+                            <h2 style={{ fontSize: 'clamp(1.7rem, 2.2vw, 2.5rem)', fontWeight: '800', lineHeight: '1.1', marginBottom: '0.5rem', color: '#fff' }}>
                                 Get Started
                             </h2>
-                            <p style={{ color: '#888', fontSize: 'clamp(0.85rem, 0.95vw, 1rem)', lineHeight: '1.5' }}>
+                            <p style={{ color: '#888', fontSize: 'clamp(0.95rem, 0.95vw, 1.1rem)', lineHeight: '1.5' }}>
                                 Ready to deploy {selectedOffering.title}? Tell us a bit about your needs.
                             </p>
                         </div>
@@ -755,7 +755,7 @@ const ServicePage = () => {
                                         border: '1px solid rgba(255,255,255,0.1)',
                                         borderRadius: '12px',
                                         color: '#fff',
-                                        fontSize: '0.95rem',
+                                        fontSize: '1rem',
                                         outline: 'none',
                                         transition: 'border-color 0.2s'
                                     }}
@@ -773,7 +773,7 @@ const ServicePage = () => {
                                     border: '1px solid rgba(255,255,255,0.1)',
                                     borderRadius: '12px',
                                     color: '#fff',
-                                    fontSize: '0.95rem',
+                                    fontSize: '1rem',
                                     outline: 'none',
                                     transition: 'border-color 0.2s'
                                 }}
@@ -790,7 +790,7 @@ const ServicePage = () => {
                                     border: '1px solid rgba(255,255,255,0.1)',
                                     borderRadius: '12px',
                                     color: '#fff',
-                                    fontSize: '0.95rem',
+                                    fontSize: '1rem',
                                     outline: 'none',
                                     resize: 'none',
                                     transition: 'border-color 0.2s'
@@ -807,7 +807,7 @@ const ServicePage = () => {
                                 borderRadius: '12px',
                                 border: 'none',
                                 cursor: 'pointer',
-                                fontSize: '1rem',
+                                fontSize: '1.1rem',
                                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                                 boxShadow: `0 4px 12px ${selectedOffering.iconColor}40`
                             }}

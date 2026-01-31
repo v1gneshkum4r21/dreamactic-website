@@ -1,15 +1,21 @@
-import { useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
-import { Search, Mail, ChevronDown, Menu, X, Sparkles } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Search, Mail, ChevronDown, Menu, X, Sparkles, Box, Zap, Layers, FileText, ArrowRight } from 'lucide-react';
 import ContactModal from './ContactModal';
+import { searchContent } from '../utils/searchIndex';
 import './Navbar.css';
 
 const Navbar = () => {
+    const navigate = useNavigate();
     const [activeDropdown, setActiveDropdown] = useState(null);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isContactOpen, setIsContactOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [searchResults, setSearchResults] = useState([]);
+    const [showSearchResults, setShowSearchResults] = useState(false);
     const closeTimeoutRef = useRef(null);
+    const searchRef = useRef(null);
 
     const handleMouseEnter = (label) => {
         if (closeTimeoutRef.current) {
@@ -29,6 +35,49 @@ const Navbar = () => {
         setActiveDropdown(null);
         setIsMobileMenuOpen(false);
     };
+
+    const handleSearchChange = (e) => {
+        const query = e.target.value;
+        setSearchQuery(query);
+
+        if (query.trim().length > 0) {
+            const results = searchContent(query);
+            setSearchResults(results);
+            setShowSearchResults(true);
+        } else {
+            setSearchResults([]);
+            setShowSearchResults(false);
+        }
+    };
+
+    const handleSearchResultClick = (path) => {
+        navigate(path);
+        setSearchQuery('');
+        setSearchResults([]);
+        setShowSearchResults(false);
+        setIsSearchOpen(false);
+        setIsMobileMenuOpen(false);
+    };
+
+    const handleSearchFocus = () => {
+        if (searchQuery.trim().length > 0 && searchResults.length > 0) {
+            setShowSearchResults(true);
+        }
+    };
+
+    // Close search results when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (searchRef.current && !searchRef.current.contains(event.target)) {
+                setShowSearchResults(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     const navItems = [
         {
@@ -58,7 +107,7 @@ const Navbar = () => {
                     { title: "Scaling AI: Insights", type: "Guide" },
                     { title: "AI Use Cases Report", type: "Report" }
                 ],
-                quickLinks: ["About Dreamatic", "Customer Stories", "Partners", "Careers"]
+                quickLinks: ["About DREAMACTIC", "Customer Stories", "Partners", "Careers"]
             }
         },
         {
@@ -85,7 +134,7 @@ const Navbar = () => {
             sidebar: {
                 title: "WHAT'S NEW",
                 resources: [
-                    { title: "Dreamatic v2.0 Release", type: "Docs" },
+                    { title: "DREAMACTIC v2.0 Release", type: "Docs" },
                     { title: "Migration Guide", type: "Guide" }
                 ],
                 quickLinks: ["Pricing", "Integrations", "Security", "Roadmap"]
@@ -130,7 +179,7 @@ const Navbar = () => {
                 <Link to="/" className="navbar-logo">
                     <img
                         src="/assets/logo/191225_Logo_PreFIN_Am.png"
-                        alt="Dreamatic Logo"
+                        alt="DREAMACTIC Logo"
                         className="logo-image"
                     />
                 </Link>
@@ -323,7 +372,7 @@ const Navbar = () => {
 
                 {/* Right Side Actions */}
                 <div className="navbar-actions">
-                    <div className="desktop-search">
+                    <div className="desktop-search" ref={searchRef}>
                         <div className={`search-container ${isSearchOpen ? 'active' : ''}`}>
                             <button
                                 className="search-toggle"
@@ -336,8 +385,49 @@ const Navbar = () => {
                                 type="text"
                                 placeholder="Search..."
                                 className="search-input"
+                                value={searchQuery}
+                                onChange={handleSearchChange}
+                                onFocus={handleSearchFocus}
                             />
                         </div>
+                        {showSearchResults && searchResults.length > 0 && (
+                            <div className="search-results">
+                                {searchResults.map((result) => {
+                                    const Icon = {
+                                        'Product': Box,
+                                        'Service': Layers,
+                                        'Page': FileText,
+                                        'Feature': Zap
+                                    }[result.category] || FileText;
+
+                                    return (
+                                        <div
+                                            key={result.id}
+                                            className="search-result-item"
+                                            onClick={() => handleSearchResultClick(result.path)}
+                                        >
+                                            <div className="search-result-icon-wrapper">
+                                                <Icon size={20} className={`search-result-icon icon-${result.category.toLowerCase()}`} />
+                                            </div>
+                                            <div className="search-result-content">
+                                                <div className="search-result-header">
+                                                    <span className="search-result-title">{result.title}</span>
+                                                    <ArrowRight size={14} className="search-result-arrow" />
+                                                </div>
+                                                <p className="search-result-description">{result.description}</p>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        )}
+                        {showSearchResults && searchResults.length === 0 && searchQuery.trim().length > 0 && (
+                            <div className="search-results">
+                                <div className="search-no-results">
+                                    No results found for "{searchQuery}"
+                                </div>
+                            </div>
+                        )}
                     </div>
                     <Link to="/showcase" className="showcase-button">
                         <Sparkles size={18} />
@@ -371,10 +461,50 @@ const Navbar = () => {
                             <Search size={20} className="mobile-search-icon" />
                             <input
                                 type="text"
-                                placeholder="Search Dreamatic..."
+                                placeholder="Search DREAMACTIC..."
                                 className="mobile-search-input"
+                                value={searchQuery}
+                                onChange={handleSearchChange}
+                                onFocus={handleSearchFocus}
                             />
                         </div>
+                        {showSearchResults && searchResults.length > 0 && (
+                            <div className="mobile-search-results">
+                                {searchResults.map((result) => {
+                                    const Icon = {
+                                        'Product': Box,
+                                        'Service': Layers,
+                                        'Page': FileText,
+                                        'Feature': Zap
+                                    }[result.category] || FileText;
+
+                                    return (
+                                        <div
+                                            key={result.id}
+                                            className="search-result-item"
+                                            onClick={() => handleSearchResultClick(result.path)}
+                                        >
+                                            <div className="search-result-icon-wrapper">
+                                                <Icon size={18} className={`search-result-icon icon-${result.category.toLowerCase()}`} />
+                                            </div>
+                                            <div className="search-result-content">
+                                                <div className="search-result-header">
+                                                    <span className="search-result-title">{result.title}</span>
+                                                </div>
+                                                <p className="search-result-description">{result.description}</p>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        )}
+                        {showSearchResults && searchResults.length === 0 && searchQuery.trim().length > 0 && (
+                            <div className="mobile-search-results">
+                                <div className="search-no-results">
+                                    No results found for "{searchQuery}"
+                                </div>
+                            </div>
+                        )}
                     </div>
 
                     {navItems.map((item, index) => (

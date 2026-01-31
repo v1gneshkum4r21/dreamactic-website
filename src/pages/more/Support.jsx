@@ -42,11 +42,11 @@ const Support = () => {
             {/* Left Panel - Editorial Style */}
             <div style={{ width: '40%', height: '100%', background: '#fff', color: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
                 <div style={{ position: 'absolute', inset: 0, backgroundImage: 'url("https://images.pexels.com/photos/7367/working-woman-photos.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2")', backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.1, mixBlendMode: 'multiply' }} />
-                <h1 style={{ fontSize: '12rem', fontWeight: '900', transform: 'rotate(-90deg)', whiteSpace: 'nowrap', letterSpacing: '-0.05em', opacity: 0.1 }}>DREAMATIC</h1>
+                <h1 style={{ fontSize: '10rem', fontWeight: '900', transform: 'rotate(-90deg)', whiteSpace: 'nowrap', letterSpacing: '-0.05em', opacity: 0.1 }}>DREAMACTIC</h1>
                 <div style={{ position: 'absolute', padding: '4rem', width: '100%', textAlign: 'left', top: '50%', transform: 'translateY(-50%)' }}>
                     <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: '#000', color: '#fff', padding: '0.4rem 1rem', borderRadius: '50px', marginBottom: '1.5rem' }}>
                         <div style={{ width: '8px', height: '8px', background: '#22c55e', borderRadius: '50%' }} />
-                        <span style={{ fontSize: '0.75rem', fontWeight: '700', letterSpacing: '0.05em' }}>SYSTEMS OPERATIONAL</span>
+                        <span style={{ fontSize: '0.85rem', fontWeight: '700', letterSpacing: '0.05em' }}>SYSTEMS OPERATIONAL</span>
                     </div>
                     <h2 style={{ fontSize: '5rem', fontWeight: '800', lineHeight: '0.9', color: '#000' }}>
                         WE'VE<br />GOT<br />YOU.
@@ -105,15 +105,15 @@ const Support = () => {
                             </div>
                             <div>
                                 <h3 style={{ fontSize: '1.25rem', fontWeight: '700', color: '#fff', marginBottom: '0.5rem' }}>{cat.title}</h3>
-                                <p style={{ color: '#666', fontSize: '0.95rem', lineHeight: '1.4' }}>{cat.desc}</p>
+                                <p style={{ color: '#666', fontSize: '1rem', lineHeight: '1.4' }}>{cat.desc}</p>
                             </div>
                         </div>
                     ))}
                 </div>
 
                 <div style={{ marginTop: '4rem', padding: '1.5rem', borderRadius: '16px', border: '1px dashed #333', textAlign: 'center' }}>
-                    <p style={{ color: '#666', fontSize: '0.95rem' }}>
-                        Need urgent help? Reach us directly at <span style={{ color: '#fff', fontWeight: '600' }}>support@dreamatic.ai</span>
+                    <p style={{ color: '#666', fontSize: '1rem' }}>
+                        Need urgent help? Reach us directly at <span style={{ color: '#fff', fontWeight: '600' }}>support@dreamactic.ai</span>
                     </p>
                 </div>
             </div>
@@ -237,7 +237,7 @@ const Support = () => {
                                         padding: '0.4rem 1rem',
                                         borderRadius: '100px',
                                         color: selectedCategory.accent,
-                                        fontSize: '0.8rem',
+                                        fontSize: '0.9rem',
                                         fontWeight: '700',
                                         marginBottom: '1rem',
                                         letterSpacing: '0.05em'

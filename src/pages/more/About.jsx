@@ -12,7 +12,7 @@ const About = () => {
             {/* Left Panel - Editorial Title */}
             <div style={{ width: '40%', height: '100%', background: '#fff', color: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
                 <div style={{ position: 'absolute', inset: 0, backgroundImage: 'url("https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2")', backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.1, mixBlendMode: 'multiply' }} />
-                <h1 style={{ fontSize: '15rem', fontWeight: '900', transform: 'rotate(-90deg)', whiteSpace: 'nowrap', letterSpacing: '-0.05em', opacity: 0.1 }}>DREAMATIC</h1>
+                <h1 style={{ fontSize: '12rem', fontWeight: '900', transform: 'rotate(-90deg)', whiteSpace: 'nowrap', letterSpacing: '-0.05em', opacity: 0.1 }}>DREAMACTIC</h1>
                 <div style={{ position: 'absolute', padding: '4rem' }}>
                     <div style={{ fontSize: '1.2rem', fontWeight: '700', marginBottom: '1rem', letterSpacing: '0.2em' }}>/// EST. 2024</div>
                     <h2 style={{ fontSize: '5rem', fontWeight: '800', lineHeight: '0.9' }}>WE BUILD<br />THE NEXT<br />MIND.</h2>
@@ -40,7 +40,7 @@ const About = () => {
                         <div className="slide-fade-in" style={{ animation: 'fadeIn 0.5s ease' }}>
                             <div style={{ fontSize: '1rem', fontFamily: 'monospace', color: '#666', marginBottom: '3rem', letterSpacing: '0.2em' }}>01 /// MISSION</div>
                             <p style={{ fontSize: '2.5rem', fontWeight: '300', lineHeight: '1.4', marginBottom: '4rem', color: '#ccc' }}>
-                                <span style={{ color: '#fff', fontWeight: '600' }}>Dreamatic</span> is an artificial intelligence research and deployment company. Our mission is to ensure that agentic general intelligence benefits all of humanity.
+                                <span style={{ color: '#fff', fontWeight: '600' }}>DREAMACTIC</span> is an artificial intelligence research and deployment company. Our mission is to ensure that agentic general intelligence benefits all of humanity.
                             </p>
                         </div>
                     )}
@@ -77,8 +77,8 @@ const About = () => {
                                 ].map((person, idx) => (
                                     <div key={idx} style={{ padding: '2rem', border: '1px solid #222', borderRadius: '12px', background: '#0a0a0a' }}>
                                         <div style={{ fontSize: '1.3rem', fontWeight: '700', marginBottom: '0.5rem' }}>{person.name}</div>
-                                        <div style={{ color: '#a78bfa', fontFamily: 'monospace', marginBottom: '0.8rem', fontSize: '0.9rem' }}>{person.role}</div>
-                                        <p style={{ color: '#666', lineHeight: '1.4', fontSize: '0.95rem' }}>{person.bio}</p>
+                                        <div style={{ color: '#a78bfa', fontFamily: 'monospace', marginBottom: '0.8rem', fontSize: '1rem' }}>{person.role}</div>
+                                        <p style={{ color: '#666', lineHeight: '1.4', fontSize: '1rem' }}>{person.bio}</p>
                                     </div>
                                 ))}
                             </div>

@@ -25,7 +25,7 @@ const Resources = () => {
             {/* Left Panel - Editorial Style */}
             <div style={{ width: '40%', height: '100%', background: '#fff', color: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
                 <div style={{ position: 'absolute', inset: 0, backgroundImage: 'url("https://images.pexels.com/photos/1181244/pexels-photo-1181244.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2")', backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.1, mixBlendMode: 'multiply' }} />
-                <h1 style={{ fontSize: '12rem', fontWeight: '900', transform: 'rotate(-90deg)', whiteSpace: 'nowrap', letterSpacing: '-0.05em', opacity: 0.1 }}>DREAMATIC</h1>
+                <h1 style={{ fontSize: '10rem', fontWeight: '900', transform: 'rotate(-90deg)', whiteSpace: 'nowrap', letterSpacing: '-0.05em', opacity: 0.1 }}>DREAMACTIC</h1>
                 <div style={{ position: 'absolute', padding: '4rem', width: '100%' }}>
                     <div style={{ fontSize: '1.2rem', fontWeight: '700', marginBottom: '1rem', letterSpacing: '0.2em' }}>/// KNOWLEDGE</div>
                     <h2 style={{ fontSize: '5rem', fontWeight: '800', lineHeight: '0.9' }}>CORE<br />RESOURCES<br />& DOCS.</h2>
@@ -120,7 +120,7 @@ const Resources = () => {
                                         padding: '0.4rem 1rem',
                                         borderRadius: '100px',
                                         color: selectedResource.accent,
-                                        fontSize: '0.8rem',
+                                        fontSize: '0.9rem',
                                         fontWeight: '700',
                                         marginBottom: '1rem',
                                         letterSpacing: '0.05em'
@@ -183,7 +183,7 @@ const Resources = () => {
                                             </div>
                                             <div>
                                                 <div style={{ color: '#fff', fontWeight: '700', fontSize: '1rem' }}>{social.name}</div>
-                                                <div style={{ color: '#666', fontSize: '0.8rem' }}>{social.detail}</div>
+                                                <div style={{ color: '#666', fontSize: '0.9rem' }}>{social.detail}</div>
                                             </div>
                                         </button>
                                     ))}
@@ -199,7 +199,7 @@ const Resources = () => {
                                     padding: '0.4rem 1rem',
                                     borderRadius: '100px',
                                     color: selectedResource.accent,
-                                    fontSize: '0.75rem',
+                                    fontSize: '0.85rem',
                                     fontWeight: '800',
                                     marginBottom: '1.5rem',
                                     letterSpacing: '0.1em'
@@ -223,13 +223,13 @@ const Resources = () => {
                                         padding: '1.5rem',
                                         border: '1px solid rgba(255,255,255,0.1)',
                                         fontFamily: 'monospace',
-                                        fontSize: '0.9rem',
+                                        fontSize: '1rem',
                                         color: selectedResource.accent,
                                         marginBottom: '2.5rem',
                                         position: 'relative',
                                         overflow: 'hidden'
                                     }}>
-                                        <div style={{ opacity: 0.5, marginBottom: '0.5rem' }}>$ dreamatic install swarm-cli</div>
+                                        <div style={{ opacity: 0.5, marginBottom: '0.5rem' }}>$ dreamactic install swarm-cli</div>
                                         <div style={{ opacity: 0.8 }}>{'>'} Initializing Neural Core...</div>
                                         <div style={{ opacity: 0.8 }}>{'>'} Connection Secured.</div>
                                         <div style={{ opacity: 0.3 }}>{"&gt;&gt;&gt;"} [Awaiting Alpha Key]</div>
@@ -245,7 +245,7 @@ const Resources = () => {
                                         ].map(l => (
                                             <div key={l.lang} style={{ borderLeft: `2px solid ${selectedResource.accent}40`, paddingLeft: '1rem' }}>
                                                 <div style={{ color: '#fff', fontWeight: '800' }}>{l.lang}</div>
-                                                <div style={{ color: '#555', fontSize: '0.8rem' }}>{l.version}</div>
+                                                <div style={{ color: '#555', fontSize: '0.9rem' }}>{l.version}</div>
                                             </div>
                                         ))}
                                     </div>

@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import HeroCarousel from '../../components/HeroCarousel';
+import React, { useState, useEffect } from 'react';
+import ProductHeroCarousel from '../../components/ProductHeroCarousel';
 import { BarChart, Truck, Users, ArrowRight, TrendingUp, DollarSign, Package, Headphones, Layers, Rocket, Zap, X } from 'lucide-react';
+import './ProductsLayout.css';
 
 const slides = [
     { id: 1, video: "https://videos.pexels.com/video-files/5377684/5377684-hd_1920_1080_25fps.mp4" },
@@ -10,6 +11,15 @@ const slides = [
 const Solutions = () => {
     const [selectedId, setSelectedId] = useState(1);
     const [showModal, setShowModal] = useState(false);
+
+    useEffect(() => {
+        // Lock scroll on mount
+        document.body.classList.add('product-locked');
+        return () => {
+            // Unlock scroll on unmount
+            document.body.classList.remove('product-locked');
+        };
+    }, []);
 
     const features = [
         {
@@ -47,39 +57,16 @@ const Solutions = () => {
     const selectedFeature = features.find(f => f.id === selectedId);
 
     return (
-        <div style={{ height: '100vh', width: '100%', background: '#0a0a0a', color: '#fff', display: 'flex', overflow: 'hidden' }}>
+        <div className="product-layout">
             {/* Left Side - PURE VIDEO */}
-            <div style={{ width: '40%', position: 'relative', overflow: 'hidden', borderRight: '1px solid #2a2a2a' }}>
-                <HeroCarousel slides={slides} />
+            <div className="product-panel left-panel">
+                <ProductHeroCarousel slides={slides} />
                 <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.3)' }} />
             </div>
 
             {/* Right Side - Dashboard */}
-            <div style={{ width: '60%', display: 'flex', flexDirection: 'column', background: 'radial-gradient(circle at top right, #1a0f2e 0%, #0a0a0a 50%)', height: '100%', position: 'relative', overflow: 'hidden' }}>
-                {/* Ambient Glow Effect */}
-                <div style={{
-                    position: 'absolute',
-                    top: '-20%',
-                    right: '-10%',
-                    width: '60%',
-                    height: '60%',
-                    background: `radial-gradient(circle, ${features.find(f => f.id === selectedId)?.accent}15 0%, transparent 70%)`,
-                    filter: 'blur(80px)',
-                    pointerEvents: 'none',
-                    transition: 'all 0.8s ease'
-                }} />
-
-                {/* Fixed Container - NO SCROLL */}
-                <div style={{
-                    flex: 1,
-                    padding: 'clamp(100px, 12vh, 140px) clamp(1.5rem, 2.5vw, 3rem) clamp(2rem, 4vh, 3rem)',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    overflow: 'hidden',
-                    position: 'relative',
-                    zIndex: 1
-                }}>
-
+            <div className="product-panel right-panel">
+                <div className="product-container">
                     {/* Top Row: Header */}
                     <div style={{ marginBottom: 'clamp(0.75rem, 1.5vh, 1.5rem)' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingRight: 'clamp(0.5rem, 1vw, 1.5rem)' }}>
@@ -199,7 +186,7 @@ const Solutions = () => {
                                         </div>
                                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', textAlign: 'left', minWidth: 0 }}>
                                             <span style={{ fontWeight: '800', fontSize: '0.85rem', color: isSelected ? '#fff' : '#ccc', whiteSpace: 'nowrap', transition: 'color 0.3s ease' }}>{feature.title}</span>
-                                            <span style={{ fontSize: '0.65rem', fontWeight: '600', color: feature.accent, opacity: isSelected ? 1 : 0.8, textTransform: 'uppercase', letterSpacing: '0.08em', whiteSpace: 'nowrap' }}>{feature.subtitle}</span>
+                                            <span style={{ fontSize: '0.8rem', fontWeight: '600', color: feature.accent, opacity: isSelected ? 1 : 0.8, textTransform: 'uppercase', letterSpacing: '0.08em', whiteSpace: 'nowrap' }}>{feature.subtitle}</span>
                                         </div>
                                     </div>
                                 );
@@ -207,7 +194,7 @@ const Solutions = () => {
                         </div>
 
                         {/* Active Detail View - SCROLLABLE */}
-                        <div key={selectedId} style={{
+                        <div key={selectedId} className="solutions-scroll-container" style={{
                             flex: 1,
                             animation: 'fadeIn 0.5s ease-out',
                             display: 'flex',
@@ -225,16 +212,8 @@ const Solutions = () => {
                                 to { opacity: 1; transform: translateY(0); }
                             }
                             
-                            div::-webkit-scrollbar {
-                                width: 6px;
-                            }
-                            div::-webkit-scrollbar-track {
-                                background: rgba(255, 255, 255, 0.05);
-                                border-radius: 10px;
-                            }
-                            div::-webkit-scrollbar-thumb {
-                                background: ${selectedFeature.accent}40;
-                                border-radius: 10px;
+                            .solutions-scroll-container::-webkit-scrollbar {
+                                display: none;
                             }
                         `}</style>
 
@@ -249,7 +228,7 @@ const Solutions = () => {
                                 border: `1.5px solid ${selectedFeature.accent}30`,
                                 boxShadow: `0 10px 30px -10px ${selectedFeature.accent}20`,
                                 position: 'relative',
-                                overflow: 'hidden'
+                                flexShrink: 0
                             }}>
                                 <div style={{
                                     position: 'absolute',
@@ -279,14 +258,14 @@ const Solutions = () => {
                                     <selectedFeature.icon size={window.innerWidth * 0.03 > 48 ? 48 : window.innerWidth * 0.03} color={selectedFeature.accent} strokeWidth={1.5} />
                                 </div>
 
-                                <div style={{ flex: 1, position: 'relative', zIndex: 1 }}>
-                                    <h2 style={{ fontSize: 'clamp(1.5rem, 2.2vw, 2.25rem)', fontWeight: '800', lineHeight: '1.1', marginBottom: '0.4rem', color: '#fff' }}>
+                                <div style={{ flex: 1, position: 'relative', zIndex: 1, overflow: 'hidden', minHeight: 0 }}>
+                                    <h2 style={{ fontSize: 'clamp(1.5rem, 2.2vw, 2.25rem)', fontWeight: '800', lineHeight: '1.4', marginBottom: '0.4rem', color: '#fff', paddingTop: '0.8rem' }}>
                                         {selectedFeature.title}
                                     </h2>
-                                    <p style={{ fontSize: 'clamp(0.8rem, 0.9vw, 1rem)', color: selectedFeature.accent, fontWeight: '700', letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
+                                    <p style={{ fontSize: 'clamp(0.9rem, 1vw, 1.15rem)', color: selectedFeature.accent, fontWeight: '700', letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                                         {selectedFeature.subtitle}
                                     </p>
-                                    <p style={{ fontSize: 'clamp(0.85rem, 0.95vw, 1.05rem)', color: '#b0b0b0', lineHeight: '1.6', maxWidth: '95%' }}>
+                                    <p style={{ fontSize: 'clamp(1rem, 1.1vw, 1.25rem)', color: '#b0b0b0', lineHeight: '1.6', maxWidth: '95%' }}>
                                         {selectedFeature.description}
                                     </p>
                                 </div>
@@ -312,7 +291,7 @@ const Solutions = () => {
                                     justifyContent: 'flex-start'
                                 }}>
                                     <h3 style={{
-                                        fontSize: 'clamp(0.7rem, 0.8vw, 0.9rem)',
+                                        fontSize: '0.85rem',
                                         fontWeight: '700',
                                         color: '#888',
                                         marginBottom: '0',
@@ -340,7 +319,7 @@ const Solutions = () => {
                                                 display: 'flex',
                                                 alignItems: 'center',
                                                 gap: 'clamp(0.95rem, 1.1vw, 1.3rem)',
-                                                fontSize: 'clamp(0.95rem, 1.1vw, 1.3rem)',
+                                                fontSize: '1.1rem',
                                                 fontWeight: '500',
                                                 color: '#ffffff',
                                                 padding: 'clamp(0.4rem, 0.6vh, 0.6rem) 0',
@@ -373,7 +352,7 @@ const Solutions = () => {
                                     justifyContent: 'flex-start'
                                 }}>
                                     <h3 style={{
-                                        fontSize: 'clamp(0.7rem, 0.8vw, 0.9rem)',
+                                        fontSize: '0.85rem',
                                         fontWeight: '700',
                                         color: '#888',
                                         marginBottom: '0',
@@ -398,7 +377,7 @@ const Solutions = () => {
                                     }}>
                                         {selectedFeature.impact.map((item, i) => (
                                             <div key={i} style={{
-                                                fontSize: 'clamp(0.8rem, 0.9vw, 1.1rem)',
+                                                fontSize: '1rem',
                                                 padding: 'clamp(0.7rem, 1vh, 1rem) clamp(0.8rem, 1vw, 1.2rem)',
                                                 borderRadius: 'clamp(10px, 1vw, 12px)',
                                                 background: `linear-gradient(135deg, ${selectedFeature.accent}20, ${selectedFeature.accent}10)`,
@@ -419,160 +398,6 @@ const Solutions = () => {
                     </div>
                 </div>
             </div>
-
-            {/* Contact Modal */}
-            {showModal && (
-                <div style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    background: 'rgba(0,0,0,0.85)',
-                    backdropFilter: 'blur(12px)',
-                    zIndex: 1000,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    animation: 'fadeIn 0.2s ease-out'
-                }}>
-                    <div style={{
-                        width: 'clamp(320px, 90%, 500px)',
-                        background: '#0a0a0a',
-                        border: `1px solid ${selectedFeature.accent}40`,
-                        borderRadius: '24px',
-                        padding: 'clamp(1.5rem, 3vw, 2.5rem)',
-                        position: 'relative',
-                        boxShadow: `0 20px 50px -10px ${selectedFeature.accent}20`,
-                        margin: '1rem'
-                    }}>
-                        <button
-                            onClick={() => setShowModal(false)}
-                            style={{
-                                position: 'absolute',
-                                top: '1.25rem',
-                                right: '1.25rem',
-                                background: 'transparent',
-                                border: 'none',
-                                color: '#666',
-                                cursor: 'pointer',
-                                transition: 'color 0.2s'
-                            }}
-                            onMouseEnter={e => e.currentTarget.style.color = '#fff'}
-                            onMouseLeave={e => e.currentTarget.style.color = '#666'}
-                        >
-                            <X size={24} />
-                        </button>
-
-                        <div style={{ marginBottom: '2rem' }}>
-                            <div style={{
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '0.5rem',
-                                marginBottom: '0.75rem',
-                                color: selectedFeature.accent,
-                                background: `${selectedFeature.accent}10`,
-                                padding: '0.25rem 0.75rem',
-                                borderRadius: '100px',
-                                fontSize: '0.75rem',
-                                fontWeight: '700',
-                                textTransform: 'uppercase',
-                                letterSpacing: '0.1em'
-                            }}>
-                                <selectedFeature.icon size={14} />
-                                {selectedFeature.title}
-                            </div>
-                            <h2 style={{ fontSize: 'clamp(1.5rem, 2vw, 2.25rem)', fontWeight: '800', lineHeight: '1.1', marginBottom: '0.5rem', color: '#fff' }}>
-                                Deploy Solution
-                            </h2>
-                            <p style={{ color: '#888', fontSize: 'clamp(0.85rem, 0.95vw, 1rem)', lineHeight: '1.5' }}>
-                                Ready to deploy {selectedFeature.title}? Tell us about your specialized needs.
-                            </p>
-                        </div>
-
-                        <form style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }} onSubmit={(e) => e.preventDefault()}>
-                            <div style={{ display: 'flex', gap: '1rem' }}>
-                                <input
-                                    type="text"
-                                    placeholder="Company Name"
-                                    style={{
-                                        flex: 1,
-                                        padding: '0.85rem 1rem',
-                                        background: 'rgba(255,255,255,0.03)',
-                                        border: '1px solid rgba(255,255,255,0.1)',
-                                        borderRadius: '12px',
-                                        color: '#fff',
-                                        fontSize: '0.95rem',
-                                        outline: 'none',
-                                        transition: 'border-color 0.2s'
-                                    }}
-                                    onFocus={e => e.target.style.borderColor = `${selectedFeature.accent}80`}
-                                    onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.1)'}
-                                />
-                            </div>
-                            <input
-                                type="email"
-                                placeholder="Work Email"
-                                style={{
-                                    width: '100%',
-                                    padding: '0.85rem 1rem',
-                                    background: 'rgba(255,255,255,0.03)',
-                                    border: '1px solid rgba(255,255,255,0.1)',
-                                    borderRadius: '12px',
-                                    color: '#fff',
-                                    fontSize: '0.95rem',
-                                    outline: 'none',
-                                    transition: 'border-color 0.2s'
-                                }}
-                                onFocus={e => e.target.style.borderColor = `${selectedFeature.accent}80`}
-                                onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.1)'}
-                            />
-                            <textarea
-                                rows={4}
-                                placeholder="Describe your solution requirements..."
-                                style={{
-                                    width: '100%',
-                                    padding: '0.85rem 1rem',
-                                    background: 'rgba(255,255,255,0.03)',
-                                    border: '1px solid rgba(255,255,255,0.1)',
-                                    borderRadius: '12px',
-                                    color: '#fff',
-                                    fontSize: '0.95rem',
-                                    outline: 'none',
-                                    resize: 'none',
-                                    transition: 'border-color 0.2s'
-                                }}
-                                onFocus={e => e.target.style.borderColor = `${selectedFeature.accent}80`}
-                                onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.1)'}
-                            />
-                            <button style={{
-                                marginTop: '0.5rem',
-                                padding: '1rem',
-                                background: selectedFeature.accent,
-                                color: '#000',
-                                fontWeight: '800',
-                                borderRadius: '12px',
-                                border: 'none',
-                                cursor: 'pointer',
-                                fontSize: '1rem',
-                                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                                boxShadow: `0 4px 12px ${selectedFeature.accent}40`
-                            }}
-                                onMouseEnter={(e) => {
-                                    e.currentTarget.style.transform = 'translateY(-2px)';
-                                    e.currentTarget.style.boxShadow = `0 8px 20px ${selectedFeature.accent}60`;
-                                }}
-                                onMouseLeave={(e) => {
-                                    e.currentTarget.style.transform = 'translateY(0)';
-                                    e.currentTarget.style.boxShadow = `0 4px 12px ${selectedFeature.accent}40`;
-                                }}
-                            >
-                                Request Consultation
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            )}
         </div>
     );
 };

@@ -43,16 +43,16 @@ const HeroCarousel = ({ slides = defaultSlides }) => {
     useEffect(() => {
         videoRefs.current.forEach((video, index) => {
             if (!video) return;
-            
+
             if (index === currentIndex) {
                 if (isAutoPlaying) {
-                    video.play().catch(() => {});
+                    video.play().catch(() => { });
                 } else {
                     video.pause();
                 }
             } else {
                 video.pause();
-                video.currentTime = 0; 
+                video.currentTime = 0;
             }
         });
     }, [currentIndex, isAutoPlaying]);
@@ -70,13 +70,13 @@ const HeroCarousel = ({ slides = defaultSlides }) => {
         <div className="hero-carousel">
             {/* Header - Minimal & Floating */}
             <div className="carousel-header">
-                <span className="brand-mark">DREAMATIC</span>
+                <span className="brand-mark">DREAMACTIC</span>
             </div>
 
             <div className="carousel-track">
                 {slides.map((slide, index) => (
-                    <div 
-                        key={slide.id} 
+                    <div
+                        key={slide.id}
                         className={`carousel-slide ${index === currentIndex ? 'active' : ''}`}
                     >
                         <div className="slide-content-wrapper">
@@ -99,12 +99,12 @@ const HeroCarousel = ({ slides = defaultSlides }) => {
 
             {/* Vertical Watermark */}
             <div className="watermark-layer">
-                <h1 className="vertical-watermark">DREAMATIC</h1>
+                <h1 className="vertical-watermark">DREAMACTIC</h1>
             </div>
 
             {/* Cinematic Bottom Bar Layout */}
             <div className="cinematic-bottom-bar">
-                
+
                 {/* 1. Main Text Info */}
                 <div className="cinematic-info">
                     <div className="meta-line">
@@ -125,7 +125,7 @@ const HeroCarousel = ({ slides = defaultSlides }) => {
                         <span className="next-label">NEXT</span>
                         <span className="next-title">{slides[nextSlideIndex].title}</span>
                     </div>
-                    
+
                     <div className="control-buttons">
                         <button onClick={prevSlide}><ArrowLeft size={24} /></button>
                         <button onClick={() => setIsAutoPlaying(!isAutoPlaying)}>
@@ -137,8 +137,8 @@ const HeroCarousel = ({ slides = defaultSlides }) => {
 
                 {/* 3. Integrated Progress Line */}
                 <div className="cinematic-progress-container">
-                    <div 
-                        className="cinematic-progress-bar" 
+                    <div
+                        className="cinematic-progress-bar"
                         style={{ width: `${progress}%` }}
                     />
                 </div>

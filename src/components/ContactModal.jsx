@@ -33,7 +33,7 @@ const ContactModal = ({ isOpen, onClose }) => {
                             <div className="icon-box"><Mail size={20} /></div>
                             <div className="info-text">
                                 <h3>Email</h3>
-                                <p>hello@dreamatic.ai</p>
+                                <p>hello@dreamactic.ai</p>
                             </div>
                         </div>
                         <div
