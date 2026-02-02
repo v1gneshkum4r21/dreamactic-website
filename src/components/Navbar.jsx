@@ -1,37 +1,104 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Search, Mail, ChevronDown, Menu, X } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Search, Mail, ChevronDown, Menu, X, Sparkles, Box, Zap, Layers, FileText, ArrowRight } from 'lucide-react';
 import ContactModal from './ContactModal';
+import { searchContent } from '../utils/searchIndex';
 import './Navbar.css';
 
 const Navbar = () => {
+    const navigate = useNavigate();
     const [activeDropdown, setActiveDropdown] = useState(null);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isContactOpen, setIsContactOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [searchResults, setSearchResults] = useState([]);
+    const [showSearchResults, setShowSearchResults] = useState(false);
+    const closeTimeoutRef = useRef(null);
+    const searchRef = useRef(null);
+
+    const handleMouseEnter = (label) => {
+        if (closeTimeoutRef.current) {
+            clearTimeout(closeTimeoutRef.current);
+            closeTimeoutRef.current = null;
+        }
+        setActiveDropdown(label);
+    };
+
+    const handleMouseLeave = () => {
+        closeTimeoutRef.current = setTimeout(() => {
+            setActiveDropdown(null);
+        }, 50); // Reduced to 50ms for snappier response
+    };
+
+    const handleLinkClick = () => {
+        setActiveDropdown(null);
+        setIsMobileMenuOpen(false);
+    };
+
+    const handleSearchChange = (e) => {
+        const query = e.target.value;
+        setSearchQuery(query);
+
+        if (query.trim().length > 0) {
+            const results = searchContent(query);
+            setSearchResults(results);
+            setShowSearchResults(true);
+        } else {
+            setSearchResults([]);
+            setShowSearchResults(false);
+        }
+    };
+
+    const handleSearchResultClick = (path) => {
+        navigate(path);
+        setSearchQuery('');
+        setSearchResults([]);
+        setShowSearchResults(false);
+        setIsSearchOpen(false);
+        setIsMobileMenuOpen(false);
+    };
+
+    const handleSearchFocus = () => {
+        if (searchQuery.trim().length > 0 && searchResults.length > 0) {
+            setShowSearchResults(true);
+        }
+    };
+
+    // Close search results when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (searchRef.current && !searchRef.current.contains(event.target)) {
+                setShowSearchResults(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     const navItems = [
         {
             label: 'SERVICES',
             layout: 'complex',
+            theme: 'pastel-strips',
             mainContent: [
                 {
                     title: "AI for Work",
                     desc: "Search across silos. Automate workflows. Orchestrate AI agents.",
-                    path: "/services/work",
-                    columns: [
-                        { title: "FEATURES", items: ["Enterprise Search", "Pre-Built AI Agents", "AI Agent Builder"] },
-                        { title: "ACCELERATORS", items: ["HR", "IT", "Recruiting"] }
-                    ]
+                    path: "/services/work"
                 },
                 {
                     title: "AI for Service",
                     desc: "Leverage Agentic capabilities to empower customers.",
-                    path: "/services/service",
-                    columns: [
-                        { title: "FEATURES", items: ["AI Agents", "Agentic Contact Center", "Proactive Outreach"] },
-                        { title: "ACCELERATORS", items: ["Retail", "Banking", "Healthcare"] }
-                    ]
+                    path: "/services/service"
+                },
+                {
+                    title: "AI for Enterprise",
+                    desc: "Transform your entire organization with custom AI swarms.",
+                    path: "/services/enterprise"
                 }
             ],
             sidebar: {
@@ -40,93 +107,67 @@ const Navbar = () => {
                     { title: "Scaling AI: Insights", type: "Guide" },
                     { title: "AI Use Cases Report", type: "Report" }
                 ],
-                quickLinks: ["About Dreamatic", "Customer Stories", "Partners", "Careers"]
+                quickLinks: ["About DREAMACTIC", "Customer Stories", "Partners", "Careers"]
             }
         },
         {
             label: 'PRODUCTS',
-            layout: 'complex', // Upgrade to rich row-based layout
+            layout: 'complex',
+            theme: 'pastel-strips',
             mainContent: [
                 {
                     title: "Core Platform",
                     desc: "The operating system for the agentic future. Build, deploy, and scale.",
-                    path: "/products/platform",
-                    columns: [
-                        { title: "CAPABILITIES", items: ["AI Studio", "Orchestration Engine", "Knowledge Graph", "Guardrails"] },
-                        { title: "DEVELOPER", items: ["API & SDKs", "CLI Tools", "Webhooks", "Playground"] }
-                    ]
+                    path: "/products/platform"
                 },
                 {
                     title: "Enterprise Solutions",
                     desc: "Tailored agent swarms for mission-critical business functions.",
-                    path: "/products/solutions",
-                    columns: [
-                        { title: "BY INDUSTRY", items: ["Financial Services", "Healthcare", "Retail & E-commerce", "Manufacturing"] },
-                        { title: "BY FUNCTION", items: ["Customer Experience", "HR & Talent", "IT Operations", "Sales Intelligence"] }
-                    ]
+                    path: "/products/solutions"
+                },
+                {
+                    title: "Agentic Solutions",
+                    desc: "Pre-configured AI agent bundles for rapid deployment and ROI.",
+                    path: "/products/agentic"
                 }
             ],
             sidebar: {
                 title: "WHAT'S NEW",
                 resources: [
-                    { title: "Dreamatic v2.0 Release", type: "Docs" },
+                    { title: "DREAMACTIC v2.0 Release", type: "Docs" },
                     { title: "Migration Guide", type: "Guide" }
                 ],
                 quickLinks: ["Pricing", "Integrations", "Security", "Roadmap"]
             }
         },
-        { label: 'SHOWCASE', path: '/showcase' },
         {
             label: 'MORE',
-            layout: 'more-complex',
-            columns: {
-                lists: [
-                    {
-                        title: 'RESOURCES',
-                        items: [
-                            { name: 'Resource Hub', path: '/resources' },
-                            { name: 'Blog', path: '/resources/blog' },
-                            { name: 'Whitepapers', path: '/resources/whitepapers' },
-                            { name: 'Webinars', path: '/resources/webinars' },
-                            { name: 'AI Research', path: '/resources/research' }
-                        ]
-                    },
-                    {
-                        title: 'COMPANY',
-                        items: [
-                            { name: 'About Us', path: '/about' },
-                            { name: 'Leadership', path: '/about/leadership' },
-                            { name: 'Customers', path: '/about/customers' },
-                            { name: 'Partners', path: '/about/partners' },
-                            { name: 'Careers', path: '/about/careers' }
-                        ]
-                    },
-                    {
-                        title: 'SUPPORT',
-                        items: [
-                            { name: 'Documentation', path: '/support/docs' },
-                            { name: 'Get Support', path: '/support' },
-                            { name: 'Community', path: '/support/community' },
-                            { name: 'Contact Us', path: '/contact' }
-                        ]
-                    }
-                ],
-                guides: {
-                    title: 'AGENTIC AI GUIDES',
-                    items: [
-                        { title: 'Dreamatic Leader', desc: 'Top performer in AI Agents', color: 'bg-blue-500' },
-                        { title: 'Generative AI 101', desc: 'The complete guide', color: 'bg-purple-500' },
-                        { title: 'CXO Toolkit', desc: 'Strategy for success', color: 'bg-indigo-500' }
-                    ]
+            layout: 'complex',
+            theme: 'pastel-strips',
+            mainContent: [
+                {
+                    title: "Company",
+                    desc: "About Us, Leadership, Customers, and Careers.",
+                    path: "/about"
                 },
-                sidebar: {
-                    title: 'UPCOMING EVENT',
-                    event: { title: 'AI SUMMIT \'25', date: 'JAN 15-17 | SF', desc: 'The future of Agentic AI' },
-                    actions: [
-                        { title: 'Talk to an expert', desc: 'Schedule a call', link: '/contact' },
-                        { title: 'Request a Demo', desc: 'See it in action', link: '/demo' }
-                    ]
+                {
+                    title: "Resources",
+                    desc: "Resource Hub, Blog, Whitepapers, and Research.",
+                    path: "/resources"
+                },
+                {
+                    title: "Support",
+                    desc: "Documentation, Community, and Help Center.",
+                    path: "/support"
                 }
+            ],
+            sidebar: {
+                title: "UPCOMING EVENT",
+                resources: [
+                    { title: "AI Summit '25", type: "Event" },
+                    { title: "Jan 15-17 | SF", type: "Date" }
+                ],
+                quickLinks: ["Contact Us", "Request Demo", "Legal", "Privacy"]
             }
         }
     ];
@@ -136,7 +177,11 @@ const Navbar = () => {
             <div className="navbar-container">
                 {/* Logo */}
                 <Link to="/" className="navbar-logo">
-                    <div className="logo-placeholder">LOGO</div>
+                    <img
+                        src="/assets/logo/191225_Logo_PreFIN_Am.png"
+                        alt="DREAMACTIC Logo"
+                        className="logo-image"
+                    />
                 </Link>
 
                 {/* Navigation Items */}
@@ -145,10 +190,10 @@ const Navbar = () => {
                         <li
                             key={index}
                             className="navbar-item"
-                            onMouseEnter={() => (item.dropdown || item.layout || item.megaMenu) && setActiveDropdown(item.label)}
-                            onMouseLeave={() => setActiveDropdown(null)}
+                            onMouseEnter={() => (item.dropdown || item.layout || item.megaMenu) && handleMouseEnter(item.label)}
+                            onMouseLeave={handleMouseLeave}
                         >
-                            {/* Complex Mega Menu Logic */}
+                            {/* Complex Striped Mega Menu Logic */}
                             {item.layout === 'complex' ? (
                                 <>
                                     <span className="navbar-link">
@@ -156,55 +201,24 @@ const Navbar = () => {
                                         <ChevronDown className="dropdown-icon" size={16} />
                                     </span>
                                     {activeDropdown === item.label && (
-                                        <div className="dropdown-menu mega-complex-container">
-                                            <div className="complex-grid">
-                                                {/* Main Content Rows */}
-                                                <div className="complex-main">
-                                                    {item.mainContent.map((row, rIdx) => (
-                                                        <div key={rIdx} className="complex-row">
-                                                            <div className="complex-row-header">
+                                        <div className={`dropdown-menu mega-complex-container ${item.theme ? `theme-${item.theme}` : ''}`}>
+                                            <div className="mega-strips-wrapper">
+                                                {item.mainContent.map((row, rIdx) => (
+                                                    <Link
+                                                        key={rIdx}
+                                                        to={row.path}
+                                                        className={`mega-strip strip-${rIdx}`}
+                                                        onClick={handleLinkClick}
+                                                    >
+                                                        <div className="strip-content">
+                                                            <div className="strip-info">
                                                                 <h4>{row.title}</h4>
                                                                 <p>{row.desc}</p>
-                                                                <Link to={row.path} className="complex-cta">LEARN MORE</Link>
                                                             </div>
-                                                            <div className="complex-row-columns">
-                                                                {row.columns.map((col, cIdx) => (
-                                                                    <div key={cIdx} className="complex-column">
-                                                                        <h5>{col.title}</h5>
-                                                                        <ul>
-                                                                            {col.items.map((it, iIdx) => (
-                                                                                <li key={iIdx}>{it}</li>
-                                                                            ))}
-                                                                        </ul>
-                                                                    </div>
-                                                                ))}
-                                                            </div>
+                                                            <div className="strip-chevron">→</div>
                                                         </div>
-                                                    ))}
-                                                </div>
-
-                                                {/* Sidebar */}
-                                                <div className="complex-sidebar">
-                                                    <div className="sidebar-section">
-                                                        <h4>{item.sidebar.title}</h4>
-                                                        <div className="sidebar-cards">
-                                                            {item.sidebar.resources.map((res, resIdx) => (
-                                                                <div key={resIdx} className="sidebar-card">
-                                                                    <div className="card-icon"></div>
-                                                                    <span>{res.title}</span>
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    </div>
-                                                    <div className="sidebar-section">
-                                                        <h4>QUICK LINKS</h4>
-                                                        <ul className="quick-links">
-                                                            {item.sidebar.quickLinks.map((link, lIdx) => (
-                                                                <li key={lIdx}><a href="#">{link}</a></li>
-                                                            ))}
-                                                        </ul>
-                                                    </div>
-                                                </div>
+                                                    </Link>
+                                                ))}
                                             </div>
                                         </div>
                                     )}
@@ -226,7 +240,7 @@ const Navbar = () => {
                                                             <ul>
                                                                 {list.items.map((it, iIdx) => (
                                                                     <li key={iIdx}>
-                                                                        <Link to={it.path}>{it.name}</Link>
+                                                                        <Link to={it.path} onClick={handleLinkClick}>{it.name}</Link>
                                                                     </li>
                                                                 ))}
                                                             </ul>
@@ -286,7 +300,7 @@ const Navbar = () => {
                                         <ChevronDown className="dropdown-icon" size={16} />
                                     </span>
                                     {activeDropdown === item.label && (
-                                        <div className="dropdown-menu mega-menu-container"> {/* Re-using dropdown-menu class for base anims */}
+                                        <div className="dropdown-menu mega-menu-container">
                                             <div className="mega-menu-grid">
                                                 {/* Left Side: Sections */}
                                                 <div className="mega-sections-group">
@@ -358,20 +372,67 @@ const Navbar = () => {
 
                 {/* Right Side Actions */}
                 <div className="navbar-actions">
-                    <div className={`search-container ${isSearchOpen ? 'active' : ''}`}>
-                        <button
-                            className="search-toggle"
-                            aria-label="Search"
-                            onClick={() => setIsSearchOpen(!isSearchOpen)}
-                        >
-                            <Search size={22} color="white" strokeWidth={2.5} />
-                        </button>
-                        <input
-                            type="text"
-                            placeholder="Search..."
-                            className="search-input"
-                        />
+                    <div className="desktop-search" ref={searchRef}>
+                        <div className={`search-container ${isSearchOpen ? 'active' : ''}`}>
+                            <button
+                                className="search-toggle"
+                                aria-label="Search"
+                                onClick={() => setIsSearchOpen(!isSearchOpen)}
+                            >
+                                <Search size={22} color="white" strokeWidth={2.5} />
+                            </button>
+                            <input
+                                type="text"
+                                placeholder="Search..."
+                                className="search-input"
+                                value={searchQuery}
+                                onChange={handleSearchChange}
+                                onFocus={handleSearchFocus}
+                            />
+                        </div>
+                        {showSearchResults && searchResults.length > 0 && (
+                            <div className="search-results">
+                                {searchResults.map((result) => {
+                                    const Icon = {
+                                        'Product': Box,
+                                        'Service': Layers,
+                                        'Page': FileText,
+                                        'Feature': Zap
+                                    }[result.category] || FileText;
+
+                                    return (
+                                        <div
+                                            key={result.id}
+                                            className="search-result-item"
+                                            onClick={() => handleSearchResultClick(result.path)}
+                                        >
+                                            <div className="search-result-icon-wrapper">
+                                                <Icon size={20} className={`search-result-icon icon-${result.category.toLowerCase()}`} />
+                                            </div>
+                                            <div className="search-result-content">
+                                                <div className="search-result-header">
+                                                    <span className="search-result-title">{result.title}</span>
+                                                    <ArrowRight size={14} className="search-result-arrow" />
+                                                </div>
+                                                <p className="search-result-description">{result.description}</p>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        )}
+                        {showSearchResults && searchResults.length === 0 && searchQuery.trim().length > 0 && (
+                            <div className="search-results">
+                                <div className="search-no-results">
+                                    No results found for "{searchQuery}"
+                                </div>
+                            </div>
+                        )}
                     </div>
+                    <Link to="/showcase" className="showcase-button">
+                        <Sparkles size={18} />
+                        <span>Showcase</span>
+                    </Link>
                     <button
                         className="contact-button"
                         onClick={() => setIsContactOpen(true)}
@@ -394,6 +455,58 @@ const Navbar = () => {
             {/* Mobile Menu Overlay */}
             <div className={`mobile-nav ${isMobileMenuOpen ? 'open' : ''}`}>
                 <div className="mobile-nav-content">
+                    {/* Mobile Search - Integrated at top */}
+                    <div className="mobile-search-wrapper">
+                        <div className="mobile-search-bar">
+                            <Search size={20} className="mobile-search-icon" />
+                            <input
+                                type="text"
+                                placeholder="Search DREAMACTIC..."
+                                className="mobile-search-input"
+                                value={searchQuery}
+                                onChange={handleSearchChange}
+                                onFocus={handleSearchFocus}
+                            />
+                        </div>
+                        {showSearchResults && searchResults.length > 0 && (
+                            <div className="mobile-search-results">
+                                {searchResults.map((result) => {
+                                    const Icon = {
+                                        'Product': Box,
+                                        'Service': Layers,
+                                        'Page': FileText,
+                                        'Feature': Zap
+                                    }[result.category] || FileText;
+
+                                    return (
+                                        <div
+                                            key={result.id}
+                                            className="search-result-item"
+                                            onClick={() => handleSearchResultClick(result.path)}
+                                        >
+                                            <div className="search-result-icon-wrapper">
+                                                <Icon size={18} className={`search-result-icon icon-${result.category.toLowerCase()}`} />
+                                            </div>
+                                            <div className="search-result-content">
+                                                <div className="search-result-header">
+                                                    <span className="search-result-title">{result.title}</span>
+                                                </div>
+                                                <p className="search-result-description">{result.description}</p>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        )}
+                        {showSearchResults && searchResults.length === 0 && searchQuery.trim().length > 0 && (
+                            <div className="mobile-search-results">
+                                <div className="search-no-results">
+                                    No results found for "{searchQuery}"
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
                     {navItems.map((item, index) => (
                         <div key={index} className="mobile-nav-item">
                             {(item.dropdown || item.layout || item.megaMenu) ? (
@@ -408,21 +521,15 @@ const Navbar = () => {
                                             className={`dropdown-arrow ${activeDropdown === item.label ? 'rotated' : ''}`}
                                         />
                                     </button>
-                                    <div className={`mobile-dropdown ${activeDropdown === item.label ? 'open' : ''}`}>
+                                    <div className={`mobile-dropdown ${activeDropdown === item.label ? 'open' : ''} ${item.theme ? `theme-${item.theme}` : ''}`}>
 
                                         {/* Logic for 'complex' (Services, Products) */}
                                         {item.layout === 'complex' && item.mainContent.map((row, rIdx) => (
                                             <div key={rIdx} className="mobile-group">
-                                                <span className="mobile-group-title">{row.title}</span>
-                                                {row.columns.map((col, cIdx) => (
-                                                    <div key={cIdx} className="mobile-subgroup">
-                                                        {col.items.map((it, iIdx) => (
-                                                            <Link key={iIdx} to={row.path} className="mobile-dropdown-link" onClick={() => setIsMobileMenuOpen(false)}>
-                                                                {it}
-                                                            </Link>
-                                                        ))}
-                                                    </div>
-                                                ))}
+                                                <Link to={row.path} className="mobile-dropdown-link" onClick={() => setIsMobileMenuOpen(false)}>
+                                                    <span className="mobile-group-title">{row.title}</span>
+                                                    <span className="mobile-group-desc">{row.desc}</span>
+                                                </Link>
                                             </div>
                                         ))}
 

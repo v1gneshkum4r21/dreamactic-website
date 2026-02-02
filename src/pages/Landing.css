@@ -1,0 +1,200 @@
+/* Global Scroll Lock specifically for Landing */
+body.landing-locked {
+    overflow: hidden !important;
+    height: 100vh !important;
+    width: 100vw !important;
+    position: fixed;
+}
+
+.landing-page {
+    background: #0a0a0a;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding-top: 100px;
+    /* Restore healthy navbar clearance */
+    box-sizing: border-box;
+}
+
+/* Hero Section (Stacked Top) */
+.landing-hero-section {
+    flex: 1;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    /* This allows the services strip to overlap if needed, or just stay at bottom */
+}
+
+/* Services Strip (Stacked Bottom) - Restored Separation */
+.landing-services-strip-container {
+    width: 100%;
+    background: transparent;
+    padding: 0 0 4rem 0;
+    /* Removed 32px (2rem) top padding based on request */
+    z-index: 10;
+    position: relative;
+    margin-top: 0;
+    /* Removed 80px gap based on request */
+}
+
+.landing-services-strip {
+    display: flex;
+    flex-wrap: nowrap !important;
+    /* Force single row */
+    gap: 1.5rem;
+    padding: 20px 6rem 0;
+    /* Top padding to allow hover lift without clipping */
+    margin-top: -20px;
+    /* Offset to keep visual position */
+    /* Space for end buttons */
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+    margin-bottom: 10px;
+}
+
+.landing-services-strip::-webkit-scrollbar {
+    display: none;
+}
+
+.strip-nav-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 20;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(20px);
+}
+
+.strip-nav-button.left {
+    left: 2rem;
+}
+
+.strip-nav-button.right {
+    right: 2rem;
+}
+
+.strip-nav-button:hover {
+    background: #fff;
+    color: #000;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+}
+
+.landing-section-title {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: rgba(255, 255, 255, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    margin-bottom: 1rem;
+    /* Tightened from 2rem */
+    padding-left: 6rem;
+}
+
+/* Service Card Styles */
+.landing-service-card {
+    flex: 0 0 380px;
+    height: 160px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 24px;
+    padding: 1.5rem;
+    display: flex;
+    gap: 1.25rem;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
+.landing-service-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* Specific Themes based on reference gradients */
+.landing-service-card[data-theme="blue"] {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(37, 99, 235, 0.1));
+}
+
+.landing-service-card[data-theme="gray"] {
+    background: linear-gradient(135deg, rgba(107, 114, 128, 0.2), rgba(75, 85, 99, 0.1));
+}
+
+.landing-service-card[data-theme="orange"] {
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.2), rgba(234, 88, 12, 0.1));
+}
+
+.landing-service-card[data-theme="pink"] {
+    background: linear-gradient(135deg, rgba(236, 72, 153, 0.2), rgba(219, 39, 119, 0.1));
+}
+
+.landing-service-card[data-theme="purple"] {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(124, 58, 237, 0.1));
+}
+
+.card-icon-box {
+    width: 64px;
+    height: 64px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.card-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.card-title {
+    color: #fff;
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: 0 0 0.4rem 0;
+}
+
+.card-description {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.85rem;
+    line-height: 1.4;
+    margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .landing-services-strip {
+        padding: 0 1.5rem;
+    }
+
+    .landing-section-title {
+        padding-left: 1.5rem;
+    }
+
+    .landing-service-card {
+        flex: 0 0 320px;
+        height: 140px;
+    }
+
+    .landing-services-strip-container {
+        margin-top: -120px;
+    }
+}

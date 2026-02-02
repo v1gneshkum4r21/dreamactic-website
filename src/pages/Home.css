@@ -1,67 +1,135 @@
+/* Global Scroll Lock specifically for Home */
+body.home-locked {
+    overflow: hidden !important;
+    height: 100vh !important;
+    width: 100vw !important;
+    position: fixed;
+}
+
 .home {
     background: #171717;
-    overflow-x: hidden;
-    padding-bottom: 80px;
-    /* Space for fixed footer */
-    margin-top: 75px;
-    /* Space after fixed navbar (70px navbar + 5px margin) */
-}
-
-.services-section {
-    padding: var(--spacing-lg) 0;
-    background: #171717;
-    overflow: hidden;
-    position: relative;
-}
-
-.services-container {
-    max-width: 100%;
-    overflow: hidden;
-}
-
-.services-strip-wrapper {
-    position: relative;
-    overflow: hidden;
+    height: 100vh;
     width: 100%;
-}
-
-.services-strip {
+    overflow: hidden;
     display: flex;
-    /* geometric precision for seamless loop: use margin on items instead of gap */
-    gap: 0;
-    animation: scroll-left 40s linear infinite;
-    width: fit-content;
-    padding: var(--spacing-md) 0;
+    flex-direction: row;
+    /* Split Layout */
+    padding-top: 70px;
+    /* Navbar height */
+    box-sizing: border-box;
 }
 
-.services-strip:hover {
-    animation-play-state: paused;
-}
-
-@keyframes scroll-left {
-    0% {
-        transform: translateX(0);
-    }
-
-    100% {
-        transform: translateX(-50%);
-    }
-}
-
-/* Duplicate cards for seamless loop */
-.services-strip-content {
+/* Panel Layout */
+.home-panel {
+    flex: 1;
+    height: 100%;
+    position: relative;
     display: flex;
-    gap: var(--spacing-lg);
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-    .services-section {
-        padding: var(--spacing-lg) 0;
+/* Left Panel - Hero Carousel */
+.home-panel.left-panel {
+    flex: 0 0 40%;
+    align-items: center;
+    background: #171717;
+    /* Optional: subtle separator or shadow if needed */
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Right Panel - Services Content */
+.home-panel.right-panel {
+    flex: 1;
+    background: #171717;
+    /* Matched to Footer/Navbar theme */
+    overflow-y: auto;
+    padding: 0 4rem;
+    display: block;
+
+    /* Hide Scrollbar but allow scrolling */
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE/Edge */
+}
+
+.home-panel.right-panel::-webkit-scrollbar {
+    display: none;
+    /* Chrome/Safari/Opera */
+}
+
+/* Services Grid Layout */
+.services-vertical-list {
+    padding: 120px 0 100px 0;
+    /* Reduced top/bottom padding to fit viewport */
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+/* Responsive: Stack on mobile */
+@media (max-width: 1200px) {
+    .services-vertical-list {
+        grid-template-columns: 1fr;
+        /* Single column on smaller screens */
+        max-width: 600px;
+    }
+}
+
+.section-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 2rem;
+}
+
+.service-card-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .home {
+        flex-direction: column;
+        overflow-y: auto;
+        /* Allow full page scroll on tablet/mobile */
+        height: auto;
+        min-height: 100vh;
     }
 
-    .services-strip {
-        gap: var(--spacing-md);
-        animation: scroll-left 30s linear infinite;
+    body.home-locked {
+        overflow: auto !important;
+        /* Unlock scroll on mobile */
+        position: static;
+        height: auto !important;
+    }
+
+    .home-panel {
+        width: 100%;
+        height: auto;
+        flex: none;
+        overflow: visible;
+    }
+
+    .home-panel.left-panel {
+        padding: 2rem 0;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .home-panel.right-panel {
+        padding: 2rem;
+    }
+
+    .services-vertical-list {
+        padding: 2rem 0;
     }
 }
