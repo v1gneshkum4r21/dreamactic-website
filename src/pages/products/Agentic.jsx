@@ -262,7 +262,7 @@ const Agentic = () => {
                             display: 'grid',
                             gridTemplateColumns: '1fr 1fr',
                             gap: 'clamp(1rem, 2vh, 1.5rem)',
-                            flex: 1
+                            // flex: 1 removed to prevent stretching
                         }}>
                             {/* Capabilities Card */}
                             <div style={{
@@ -295,7 +295,7 @@ const Agentic = () => {
                                 <div style={{
                                     display: 'flex',
                                     flexDirection: 'column',
-                                    gap: 'clamp(0.5rem, 0.8vh, 0.8rem)',
+                                    gap: 'clamp(0.8rem, 1.2vh, 1.2rem)',
                                     flex: 1,
                                     justifyContent: 'center',
                                     padding: 'clamp(0.5rem, 1vh, 1rem) 0'
@@ -356,10 +356,10 @@ const Agentic = () => {
                                 <div style={{
                                     display: 'grid',
                                     gridTemplateColumns: '1fr 1fr',
-                                    gap: 'clamp(0.5rem, 0.8vw, 0.8rem)',
+                                    gap: 'clamp(0.8rem, 1vw, 1.2rem)',
                                     alignContent: 'center',
                                     flex: 1,
-                                    padding: 'clamp(0.3rem, 0.6vh, 0.6rem) 0'
+                                    padding: 'clamp(0.5rem, 1vh, 1rem) 0'
                                 }}>
                                     {selectedFeature.capabilities.map((item, i) => (
                                         <div key={i} style={{

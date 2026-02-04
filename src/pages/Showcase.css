@@ -58,7 +58,8 @@
     flex-direction: column;
     align-items: center;
     gap: 1rem;
-    max-width: 800px;
+    max-width: 50rem;
+    /* 800px -> 50rem */
 }
 
 .showcase-header-simple h1 {
@@ -78,7 +79,8 @@
     border-radius: 8px;
     padding: 0.6rem 1.25rem;
     width: 100%;
-    max-width: 400px;
+    max-width: 25rem;
+    /* 400px -> 25rem */
     border: 1px solid rgba(255, 255, 255, 0.08);
 }
 

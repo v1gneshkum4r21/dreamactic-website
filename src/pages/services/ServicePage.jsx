@@ -553,7 +553,7 @@ const ServicePage = () => {
                     {/* Tab Content Display */}
                     <div style={{ flex: 1, position: 'relative', marginTop: '2rem', minHeight: 0 }}>
                         {activeTab === 'overview' && (
-                            <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '2rem', height: '100%', animation: 'fadeIn 0.3s ease-out' }}>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.2fr) minmax(0, 1fr)', gap: '1.5rem', alignContent: 'start', animation: 'fadeIn 0.3s ease-out' }}>
                                 {/* Features Panel */}
                                 <div style={{
                                     background: 'rgba(255, 255, 255, 0.03)',
