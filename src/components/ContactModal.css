@@ -37,10 +37,10 @@
     border: 1px solid rgba(255, 255, 255, 0.08);
     /* Remove complicated gradient border */
 
-    width: 95%;
-    max-width: 550px;
+    width: clamp(550px, 40vw, 800px);
+    max-width: 95vw;
     border-radius: 24px;
-    padding: 3rem;
+    padding: clamp(2rem, 4vh, 4rem);
     box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.9);
     animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     overflow: hidden;

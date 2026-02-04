@@ -386,7 +386,7 @@ const Platform = () => {
 
             {showModal && (
                 <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, backdropFilter: 'blur(10px)' }}>
-                    <div style={{ width: '400px', background: '#111', padding: '2rem', borderRadius: '24px', border: `1px solid ${selectedFeature.accent}40`, position: 'relative' }}>
+                    <div style={{ width: 'clamp(400px, 30vw, 600px)', background: '#111', padding: '2rem', borderRadius: '24px', border: `1px solid ${selectedFeature.accent}40`, position: 'relative' }}>
                         <button onClick={() => setShowModal(false)} style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'transparent', border: 'none', color: '#fff', cursor: 'pointer' }}><X size={24} /></button>
                         <h2 style={{ color: '#fff' }}>Contact Us</h2>
                         <form style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>

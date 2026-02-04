@@ -690,7 +690,7 @@ const ServicePage = () => {
                     animation: 'fadeIn 0.2s ease-out'
                 }}>
                     <div style={{
-                        width: 'clamp(320px, 90%, 500px)',
+                        width: 'clamp(320px, 60vw, 750px)',
                         background: '#0a0a0a',
                         border: `1px solid ${selectedOffering.iconColor}40`,
                         borderRadius: '24px',

@@ -81,7 +81,7 @@ const Resources = () => {
                     animation: 'fadeIn 0.25s cubic-bezier(0.4, 0, 0.2, 1)'
                 }}>
                     <div style={{
-                        width: 'clamp(320px, 90%, 680px)',
+                        width: 'clamp(320px, 70vw, 900px)',
                         background: '#0a0a0a',
                         border: `1px solid ${selectedResource.accent}40`,
                         borderRadius: '24px',
