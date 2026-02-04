@@ -106,7 +106,8 @@ body.landing-locked {
 
 /* Service Card Styles */
 .landing-service-card {
-    flex: 0 0 380px;
+    flex: 0 0 23.75rem;
+    /* 380px -> 23.75rem */
     height: 160px;
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.05);

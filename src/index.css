@@ -157,6 +157,32 @@ html {
   --glass-bg: rgba(255, 255, 255, 0.05);
   --glass-border: rgba(255, 255, 255, 0.1);
   --glass-blur: 12px;
+
+  /* Large Screen Variables */
+  --container-width-standard: 1280px;
+  --container-width-2k: 1600px;
+  --container-width-4k: 2400px;
+}
+
+/* Root Font Scaling for Large Screens */
+@media (min-width: 1921px) {
+  :root {
+    font-size: 18px;
+    /* Scale up for 2K */
+    --spacing-md: 1.125rem;
+    --spacing-lg: 1.68rem;
+    --container-width-standard: var(--container-width-2k);
+  }
+}
+
+@media (min-width: 2561px) {
+  :root {
+    font-size: 24px;
+    /* Scale up for 4K */
+    --spacing-md: 1.25rem;
+    --spacing-lg: 2rem;
+    --container-width-standard: var(--container-width-4k);
+  }
 }
 
 body {
@@ -176,7 +202,7 @@ body {
 
 /* Utility Classes */
 .container {
-  max-width: 1280px;
+  max-width: var(--container-width-standard);
   margin: 0 auto;
   padding: 0 var(--spacing-lg);
 }

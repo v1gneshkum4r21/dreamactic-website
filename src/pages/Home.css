@@ -64,7 +64,8 @@ body.home-locked {
 .services-vertical-list {
     padding: 120px 0 100px 0;
     /* Reduced top/bottom padding to fit viewport */
-    max-width: 1000px;
+    max-width: 62.5rem;
+    /* 1000px -> 62.5rem for scaling */
     margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
