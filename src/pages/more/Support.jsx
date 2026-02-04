@@ -135,7 +135,7 @@ const Support = () => {
                     animation: 'fadeIn 0.2s ease-out'
                 }}>
                     <div style={{
-                        width: 'clamp(320px, 90%, 600px)',
+                        width: 'clamp(320px, 60vw, 800px)',
                         background: '#0a0a0a',
                         border: `1px solid ${selectedCategory.accent}40`,
                         borderRadius: '24px',

@@ -526,7 +526,7 @@ const Work = () => {
                     animation: 'fadeIn 0.2s ease-out'
                 }}>
                     <div style={{
-                        width: '500px',
+                        width: 'clamp(500px, 50vw, 800px)',
                         background: '#0a0a0a',
                         border: `1px solid ${selectedSolution.iconColor}40`,
                         borderRadius: '24px',
